@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://gopvomiaoud1"]
 
-[ext_resource type="Script" uid="uid://cxc13yje1jry5" path="res://scripts/CameraController.cs" id="1_uoano"]
-[ext_resource type="Script" path="res://scripts/AlgorithmScene.cs" id="2_algorithm"]
+[ext_resource type="Script" uid="uid://cxc13yje1jry5" path="res://scripts/Core/CameraController.cs" id="1_uoano"]
+[ext_resource type="Script" path="res://scripts/Algorithms/AlgorithmScene.cs" id="2_algorithm"]
 [ext_resource type="PackedScene" uid="uid://lq60g7ba16p0" path="res://scenes/UI/PopUpMenu.tscn" id="3_popup"]
 
 [node name="CellularAutomata" type="Node2D"]

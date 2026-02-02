@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://lq60g7ba16p0"]
 
-[ext_resource type="Script" path="res://scripts/PopUpMenuController.cs" id="1_script"]
+[ext_resource type="Script" path="res://scripts/UI/PopUpMenuController.cs" id="1_script"]
 
 [node name="PopUpMenu" type="Node2D"]
 script = ExtResource("1_script")

@@ -1,0 +1,205 @@
+---
+description: Project context and conventions for the Godot C# procedural generation game
+alwaysApply: true
+---
+
+# Procedural Generation Game – Project Rules
+
+## Project Context (From Original Requirements)
+
+This is a **multi-part project**. Part one covers Cellular Automata and Perlin Noise; later parts will add **Binary Space Partitioning**, **Random Walk**, and **Wave Function Collapse**. The structure must stay easy to extend so new algorithm demos can be added without refactoring.
+
+**Purpose**: Learn and implement procedural generation algorithms used in games; showcase them in a game demo where content is generated algorithmically rather than hand-designed.
+
+**Required behavior (from spec)**:
+- **Main menu**: Options to select which algorithm to demo; each option clearly labeled and selectable via **mouse click or keyboard** (e.g. focus + Enter, or number keys). Way to exit the program from main menu.
+- **Each algorithm demo**: Transition from main menu to a demo scene; **visual demonstration** of the algorithm; **UI controls** to tune algorithm parameters (align with any “provided demo” or reference for which parameters are adjustable); **Generate/Regenerate** button that regenerates the world with current parameters; **Way to return to main menu** (e.g. Back button or context menu).
+- **Technical**: Scene management (distinct scenes for main menu, each demo, and UI separate from game logic); code organization (algorithms reusable, algorithm logic **separate from visualization**); code reuse (no duplicate code, shared functionality e.g. scene transitions, menu navigation); camera controllable with mouse (click-drag pan, scroll zoom).
+
+**Bonus (from spec)**:
+- **Cellular Automata**: Render using **TileMapLayer(s)** instead of simple drawings (+5 pts).
+- **Perlin Noise**: Render using **TileMapLayer(s)** instead of simple drawings (+15 pts).
+
+**Hints from spec**: Use a global game manager (autoload) for scene transitions; keep algorithm and display fully separate (algorithms produce data structures only, visualization reads and renders); use `_Draw()` and `QueueRedraw()` for custom rendering when not using TileMap; keep x = column and y = row consistent.
+
+---
+
+## What This Project Is (Summary)
+
+- **Godot 4 + C#** (.NET 8) game demo showcasing procedural generation algorithms.
+- **Current demos**: Cellular Automata, Perlin Noise. Perlin must show **6 elevation/biome types**: deep water, shallow water, beach, grassland, mountain, snowy peaks.
+- **Planned demos (future parts)**: Binary Space Partitioning, Random Walk, Wave Function Collapse. Every change should keep adding new algorithm demos straightforward.
+
+---
+
+## File and Folder Layout
+
+Update file structure as it changes.
+```
+procedural-generation/
+  .cursor/rules/
+    procedural-generation.mdc     # This rule file
+  project.godot                    # Entry: run/main_scene = MainMenu; autoload: GameManager
+  scenes/
+    MainMenu.tscn                  # Root: Control with MainMenu.cs
+    CellularAutomata.tscn         # Root: Node2D with AlgorithmScene.cs
+    PerlinNoise.tscn              # Root: Node2D with AlgorithmScene.cs
+    UI/
+      PopUpMenu.tscn              # Root: Node2D with PopUpMenuController.cs
+  scripts/
+    GameManager.cs                # Autoload – scene transitions only
+    MainMenu.cs                   # Main menu button wiring
+    CameraController.cs           # Attached to Camera2D – pan/zoom
+    AlgorithmScene.cs             # Shared: right-click context menu for demo scenes
+    PopUpMenuController.cs       # PopUpMenu scene: show at mouse, Main Menu / Exit
+    Algorithms/                  # (To add) Pure data generators, no Godot types
+    # View scripts and demo UI scripts go here or in subfolders as needed
+```
+
+- **Scene paths**: Main menu and demos under `scenes/`; UI scenes under `scenes/UI/`. As future parts add BSP, Random Walk, WFC, add new `scenes/Xxx.tscn` and `scenes/UI/XxxUI.tscn` as needed.
+- **Script paths**: Core scripts in `scripts/`; algorithm logic in `scripts/Algorithms/` when added; view and demo UI scripts in `scripts/` or subfolders. Layout may grow (e.g. `scripts/Views/`) but keep algorithms strictly in `Algorithms/`.
+- **Scene transitions**: Always via `GameManager`; scene paths use `res://scenes/...` and `res://scenes/UI/...`.
+
+---
+
+## Scene Management (GameManager)
+
+- **GameManager** is an **autoload** (`project.godot` → `[autoload]` → `GameManager="*res://scripts/GameManager.cs"`). It is a root-level node; it has **no** children from MainMenu or demo scenes, so do **not** use `GetNode(...)` from GameManager to find buttons or UI in those scenes.
+- **All scene changes** go through GameManager:
+  - `GameManager.Instance.GoToMainMenu()`
+  - `GameManager.Instance.GoToCellularAutomata()`
+  - `GameManager.Instance.GoToPerlinNoise()`
+  - For new demos: add `GoToXxx()` that calls `ChangeScene(ResourceLoader.Load<PackedScene>("res://scenes/Xxx.tscn"))`.
+- **Who wires buttons**: The **scene that owns the UI** wires its buttons. Main menu buttons are wired in `MainMenu.cs` (root of MainMenu scene). PopUpMenu buttons are wired in `PopUpMenuController.cs`. Back/Regenerate buttons for a demo are wired in that demo’s UI script or view script, calling `GameManager.Instance.GoToMainMenu()` for “Back”.
+
+---
+
+## Scene Tree Patterns
+
+### Main Menu (`MainMenu.tscn`)
+
+- Root: `Control` with `MainMenu.cs`.
+- Children: Camera2D (optional), a container (e.g. VBoxContainer) with buttons: Cellular Automata, Perlin Noise, Exit. Each option must be **clearly labeled** and selectable via **mouse click or keyboard** (e.g. focus navigation + Enter, or number keys 1/2/3 if desired).
+- In `MainMenu._Ready()`: `GetNode<Button>("VBoxContainer/...").Pressed += ...` for each button. Exit calls `GetTree().Quit()`; demo buttons call `GameManager.Instance.GoToCellularAutomata()` etc.
+
+### Algorithm Demo Scenes (`CellularAutomata.tscn`, `PerlinNoise.tscn`)
+
+- Root: `Node2D` with **AlgorithmScene.cs** (shared script).
+- Children:
+  - `Camera2D` with **CameraController.cs** (pan/zoom).
+  - `ContextMenuLayer` (CanvasLayer) with an **instance of PopUpMenu** (`scenes/UI/PopUpMenu.tscn`).
+  - (Later) A node for the algorithm view (draw or TileMap) and an instance of the demo’s UI scene for parameters and Regenerate/Back.
+- AlgorithmScene only: gets `ContextMenuLayer/PopUpMenu` and on **right-click** calls `_popUpMenu.ShowAt(GetViewport().GetMousePosition())`.
+
+### PopUpMenu (`scenes/UI/PopUpMenu.tscn`)
+
+- Root: `Node2D` with **PopUpMenuController.cs**. Instanced **under a CanvasLayer** in demo scenes so its `Position` is in **viewport/screen** space.
+- Children: e.g. VBoxContainer with "Main Menu" and "Exit" buttons.
+- PopUpMenuController: starts hidden; `ShowAt(Vector2 viewportPosition)` sets `Position = viewportPosition` and `Show()`. Wire Main Menu → `GameManager.Instance.GoToMainMenu()`, Exit → `GetTree().Quit()`. “Click outside to close”: in `_UnhandledInput`, if visible and left-click and mouse outside `GetNode<Control>("VBoxContainer").GetGlobalRect()`, call `Hide()` and `SetInputAsHandled()`.
+
+---
+
+## Algorithm vs Visualization (Separation of Concerns)
+
+This separation is **required** by the project spec: “Keep the algorithm logic totally separate from the display. Your algorithm classes/functions should generate data structures (like arrays, grids, or noise maps) that represent the generated content, and then separate visualization code should read that data and render it to the screen.”
+
+- **Algorithms** (future `scripts/Algorithms/*.cs`):
+  - **Input**: Plain parameters (ints, floats, dimensions, seed). No `Node`, `Viewport`, `Image`, `TileMap`, or scene references.
+  - **Output**: Data only — e.g. `bool[,]`, `int[,]`, `float[,]` for grids/noise. No Godot rendering types.
+  - **No** `_Draw()`, **no** `QueueRedraw()`, **no** dependency on Godot display or scene tree. This keeps algorithms testable and reusable and satisfies the spec.
+- **Visualization** (view scripts in demo scenes):
+  - **Input**: Data produced by the algorithm (e.g. grid, height map).
+  - **Responsibility**: Run the algorithm with current parameters, then either call `_Draw()` (and `QueueRedraw()` when data changes) or fill a `TileMapLayer`. Do **not** put generation logic inside the view; the view only consumes data and renders.
+- **Data flow**: UI/parameters → view script → algorithm → data → view script draws or updates TileMap. Regenerate button triggers “run algorithm with current params, update data, then redraw/update TileMap”.
+
+---
+
+## Coordinates and Grids
+
+- In 2D arrays and grids: **x = column (horizontal)**, **y = row (vertical)**. Use this consistently when indexing and when mapping grid cells to world/draw positions (e.g. `grid[x, y]` and draw at `(x * cellSize, y * cellSize)` or equivalent).
+- **Camera**: World position uses the same coordinate system. `GetGlobalMousePosition()` is in world space; `GetViewport().GetMousePosition()` is in viewport/screen space. Use viewport position for UI that should stay on screen (e.g. PopUpMenu under CanvasLayer).
+
+---
+
+## Input Handling
+
+- Use **`_UnhandledInput`** for:
+  - Camera (pan, zoom, wheel, pinch) so that UI buttons can consume clicks and the camera doesn’t react when clicking UI.
+  - Right-click to open PopUpMenu (AlgorithmScene).
+  - “Click outside” to close PopUpMenu (PopUpMenuController).
+- Use **`_Input`** only when the action must run before UI (rare). Prefer `_UnhandledInput` so UI gets first chance.
+- When handling an event that should not propagate, call **`GetViewport().SetInputAsHandled()`** (e.g. after opening the context menu or closing it on click-outside).
+- **Mac trackpad**: Zoom is delivered as **`InputEventMagnifyGesture`** (pinch). Handle `magnify.Factor` in addition to `MouseButton.WheelUp` / `WheelDown` so zoom works with both mouse wheel and trackpad.
+
+---
+
+## Camera (CameraController)
+
+- **Attached to**: A `Camera2D` node (script must extend **`Camera2D`**, not `Node`).
+- **Pan**: Left mouse drag; store `GetGlobalMousePosition()` on press, then `Position -= (currentMouseWorld - _lastMouseWorld)` on motion while dragging.
+- **Zoom**: Wheel up/down and `InputEventMagnifyGesture`. Zoom toward cursor: adjust `Position` so the world point under the mouse stays under the mouse after zoom (e.g. `Position = worldPoint - (worldPoint - Position) * (newZoom.X / oldZoom.X)`).
+- **Exports**: e.g. `ZoomMin`, `ZoomMax`, `ZoomStep` so behavior can be tuned in the editor.
+- Do **not** use a static `CameraController.Instance` that persists across scenes; each demo scene has its own camera. If you need a reference, set/clear it in `_Ready`/`_ExitTree` for the current scene only.
+
+---
+
+## UI and Menus
+
+- **Main menu**: Has its own Exit button; wire in `MainMenu.cs` to `GetTree().Quit()`.
+- **Algorithm scenes only**: Right-click opens PopUpMenu (Main Menu / Exit). Implemented via AlgorithmScene + PopUpMenu under `ContextMenuLayer` (CanvasLayer). PopUpMenu is **not** shown on the main menu.
+- **Back to main menu**: Always `GameManager.Instance.GoToMainMenu()`. No duplicate “load MainMenu scene and change” logic elsewhere.
+- **New demo UI**: Each demo can have its own UI scene (parameters, Regenerate, Back). Back button should call `GameManager.Instance.GoToMainMenu()`.
+
+---
+
+## Naming Conventions
+
+- **Scenes**: PascalCase (e.g. `MainMenu.tscn`, `CellularAutomata.tscn`, `PopUpMenu.tscn`).
+- **Scripts**: PascalCase, match purpose (e.g. `MainMenu.cs`, `AlgorithmScene.cs`, `PopUpMenuController.cs`, `CameraController.cs`). Algorithm classes: `XxxAlgorithm` (e.g. `CellularAutomataAlgorithm`).
+- **Nodes in scenes**: Clear names (e.g. `ContextMenuLayer`, `VBoxContainer`, `CellularAutomataButton`). Use consistent paths in `GetNode<>()` (e.g. `VBoxContainer/Exit`, `ContextMenuLayer/PopUpMenu`).
+- **C#**: `partial class`, match node type when attached to a node (e.g. `MainMenu : Control`, `AlgorithmScene : Node2D`, `CameraController : Camera2D`). Private fields: `_camelCase`.
+
+---
+
+## Adding a New Algorithm Demo (Checklist)
+
+1. **GameManager**: Add `GoToNewDemo()` that `ChangeScene(ResourceLoader.Load<PackedScene>("res://scenes/NewDemo.tscn"))`.
+2. **Main menu**: Add a button and in `MainMenu._Ready()` wire it to `GameManager.Instance.GoToNewDemo`.
+3. **Scene**: New `scenes/NewDemo.tscn` — root Node2D with AlgorithmScene.cs; children: Camera2D (CameraController), ContextMenuLayer with PopUpMenu instance, view node (for draw/TileMap), instance of demo UI scene.
+4. **Algorithm**: New `scripts/Algorithms/NewDemoAlgorithm.cs` — takes parameters, returns data (e.g. `int[,]`). No Godot rendering.
+5. **View**: New script on the view node — runs algorithm with current params, stores result, calls `QueueRedraw()` or updates TileMap.
+6. **Demo UI scene**: e.g. `scenes/UI/NewDemoUI.tscn` — parameter controls, Regenerate (triggers view to regenerate and redraw), Back (calls `GameManager.Instance.GoToMainMenu()`).
+
+---
+
+## Future Parts and Planned Demos
+
+- **Binary Space Partitioning (BSP)**, **Random Walk**, and **Wave Function Collapse** will be added in later parts. Use the same pattern: new scene, new algorithm class under `scripts/Algorithms/`, new view script, new demo UI scene, new `GoToXxx()` on GameManager and a main-menu button.
+- **Parameter sets**: Each algorithm has its own tunable parameters. If a “provided demo” or reference is mentioned for an algorithm, align the adjustable parameters with that reference; otherwise use standard parameters for that algorithm type.
+- **Rendering**: Standard approach is custom draw (`_Draw()` + `QueueRedraw()`). Bonus is to use **TileMapLayer(s)** — CA bonus +5 pts, Perlin bonus +15 pts. When adding BSP / Random Walk / WFC, follow the same “algorithm → data → visualization” split; TileMap rendering can be added for consistency or bonus if specified.
+- **No duplicate code**: Scene transitions, “Back to main menu,” and shared camera behavior stay centralized. New demos only add new algorithm + view + UI and one new `GoToXxx()` plus one main-menu button.
+
+---
+
+## What to Avoid
+
+- **Do not** put button or UI logic in GameManager; GameManager has no access to nodes inside MainMenu or demo scenes.
+- **Do not** put Godot rendering types (`Image`, `TileMap`, `Texture2D`, nodes) inside algorithm classes; keep algorithms data-only.
+- **Do not** duplicate scene transition code; centralize in GameManager.
+- **Do not** use `_Input` for camera or context menu if `_UnhandledInput` is enough; prefer giving UI first chance to handle input.
+- **Do not** assume scroll wheel only for zoom; support `InputEventMagnifyGesture` for Mac trackpad.
+- **Do not** merge algorithm logic and visualization into one class; the spec requires them to be separate (algorithm → data → visualization).
+
+---
+
+## Quick Reference: Key Paths and Calls
+
+| Purpose | Where | Example |
+|--------|--------|--------|
+| Go to main menu | Any scene with UI | `GameManager.Instance.GoToMainMenu()` |
+| Go to demo | Main menu only | `GameManager.Instance.GoToCellularAutomata()` etc. |
+| Quit game | Main menu or PopUpMenu | `GetTree().Quit()` |
+| Show context menu at mouse | AlgorithmScene | `_popUpMenu.ShowAt(GetViewport().GetMousePosition())` |
+| Scene path for demo | GameManager | `res://scenes/CellularAutomata.tscn` |
+| Scene path for UI | Instancing | `res://scenes/UI/PopUpMenu.tscn` |
+| Get popup in demo | AlgorithmScene | `GetNode<PopUpMenuController>("ContextMenuLayer/PopUpMenu")` |
