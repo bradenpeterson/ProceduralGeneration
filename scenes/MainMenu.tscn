@@ -1,5 +1,15 @@
-[gd_scene format=3 uid="uid://c8gh4ilbm5qgv"]
+[gd_scene load_steps=3 format=3 uid="uid://c8gh4ilbm5qgv"]
+
+[ext_resource type="Script" uid="uid://cxc13yje1jry5" path="res://scripts/CameraController.cs" id="1_0ykhv"]
+[ext_resource type="Texture2D" uid="uid://cpkqoeiscxxqx" path="res://icon.svg" id="2_2wh52"]
 
 [node name="MainMenu" type="Node2D"]
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+position_smoothing_speed = 20.0
+rotation_smoothing_enabled = true
+script = ExtResource("1_0ykhv")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_2wh52")
