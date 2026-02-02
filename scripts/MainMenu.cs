@@ -1,0 +1,10 @@
+using Godot;
+
+public partial class MainMenu : Control
+{
+	public override void _Ready()
+	{
+		GetNode<Button>("VBoxContainer/CellularAutomataButton").Pressed += GameManager.Instance.GoToCellularAutomata;
+		GetNode<Button>("VBoxContainer/PerlinNoiseButton").Pressed += GameManager.Instance.GoToPerlinNoise;
+	}
+}

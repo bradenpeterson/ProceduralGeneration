@@ -7,14 +7,17 @@ public partial class GameManager : Node
 
 	public override void _Ready()
 	{
-		if (Instance != null)
-		{
-			GD.PrintErr("Multiple instances of GameManager detected! There should only be one instance.");
-			QueueFree();
-			return;
-		}
-
 		Instance = this;
+	}
+
+	public void GoToCellularAutomata()
+	{
+		ChangeScene(ResourceLoader.Load<PackedScene>("res://scenes/CellularAutomata.tscn"));
+	}
+
+	public void GoToPerlinNoise()
+	{
+		ChangeScene(ResourceLoader.Load<PackedScene>("res://scenes/PerlinNoise.tscn"));
 	}
 
 	public void ChangeScene(PackedScene scenePath)
