@@ -37,7 +37,7 @@ text = "Chunk Width"
 layout_mode = 2
 min_value = 1.0
 max_value = 10000.0
-value = 1000.0
+value = 1.0
 
 [node name="HeightBox" type="HBoxContainer" parent="ControlPanel"]
 layout_mode = 2
@@ -50,7 +50,7 @@ text = "Chunk Height"
 layout_mode = 2
 min_value = 1.0
 max_value = 10000.0
-value = 1000.0
+value = 1.0
 
 [node name="StepsBox" type="HBoxContainer" parent="ControlPanel"]
 layout_mode = 2
@@ -62,7 +62,6 @@ text = "Number of Steps"
 [node name="StepsInput" type="SpinBox" parent="ControlPanel/StepsBox"]
 layout_mode = 2
 max_value = 15.0
-value = 6.0
 
 [node name="DensityBox" type="HBoxContainer" parent="ControlPanel"]
 layout_mode = 2
@@ -76,7 +75,7 @@ layout_mode = 2
 min_value = 0.01
 max_value = 1.0
 step = 0.01
-value = 0.5
+value = 0.01
 
 [node name="SeedBox" type="HBoxContainer" parent="ControlPanel"]
 layout_mode = 2

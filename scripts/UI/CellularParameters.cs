@@ -20,6 +20,13 @@ public partial class CellularParameters : Control
 		_seedLineEdit = GetNode<LineEdit>("ControlPanel/SeedBox/SeedInput");
 		_regenerateButton = GetNode<Button>("ControlPanel/RegenerateButton");
 
+		// Initialize UI from controller's current values
+		_widthSpinBox.Value = _controller.Width;
+		_heightSpinBox.Value = _controller.Height;
+		_numStepsSpinBox.Value = _controller.Iterations;
+		_initialDensitySpinBox.Value = _controller.FillProbability;
+		_seedLineEdit.Text = _controller.Seed.ToString();
+
 		_regenerateButton.Pressed += OnRegeneratePressed;
 	}
 
