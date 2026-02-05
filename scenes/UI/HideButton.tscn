@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dtvj5kwryqqct"]
+
+[ext_resource type="Script" uid="uid://cwbnx8v4tr585" path="res://scripts/UI/HideButton.cs" id="1_cbxaj"]
+
+[node name="HideButton" type="Button"]
+text = "Hide Controls"
+script = ExtResource("1_cbxaj")
