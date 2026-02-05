@@ -1,12 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://btcyocnxuosyg"]
+[gd_scene load_steps=4 format=3 uid="uid://btcyocnxuosyg"]
 
 [ext_resource type="PackedScene" uid="uid://dtvj5kwryqqct" path="res://scenes/UI/HideButton.tscn" id="1_67w34"]
+[ext_resource type="Script" uid="uid://bkfcvhidw6xck" path="res://scripts/UI/CellularParameters.cs" id="1_cagf3"]
+[ext_resource type="PackedScene" uid="uid://dwooo3gi1ypeg" path="res://scenes/UI/RegenerateButton.tscn" id="2_yrl6l"]
 
 [node name="CellularParameters" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 8.0
 offset_bottom = 40.0
+script = ExtResource("1_cagf3")
 
 [node name="HideButton" parent="." instance=ExtResource("1_67w34")]
 layout_mode = 0
@@ -15,7 +18,7 @@ offset_top = 8.0
 offset_right = 237.0
 offset_bottom = 41.0
 
-[node name="BoxContainer" type="BoxContainer" parent="."]
+[node name="ControlPanel" type="BoxContainer" parent="."]
 layout_mode = 1
 offset_left = 12.0
 offset_top = 46.0
@@ -23,69 +26,69 @@ offset_right = 237.0
 offset_bottom = 324.0
 vertical = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="BoxContainer"]
+[node name="WidthBox" type="HBoxContainer" parent="ControlPanel"]
 layout_mode = 2
 
-[node name="WidthLabel" type="Label" parent="BoxContainer/HBoxContainer"]
+[node name="WidthLabel" type="Label" parent="ControlPanel/WidthBox"]
 layout_mode = 2
 text = "Chunk Width"
 
-[node name="WidthInput" type="SpinBox" parent="BoxContainer/HBoxContainer"]
+[node name="WidthInput" type="SpinBox" parent="ControlPanel/WidthBox"]
 layout_mode = 2
 min_value = 1.0
 max_value = 10000.0
 value = 1000.0
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="BoxContainer"]
+[node name="HeightBox" type="HBoxContainer" parent="ControlPanel"]
 layout_mode = 2
 
-[node name="HeightLabel" type="Label" parent="BoxContainer/HBoxContainer2"]
+[node name="HeightLabel" type="Label" parent="ControlPanel/HeightBox"]
 layout_mode = 2
 text = "Chunk Height"
 
-[node name="HeightInput" type="SpinBox" parent="BoxContainer/HBoxContainer2"]
+[node name="HeightInput" type="SpinBox" parent="ControlPanel/HeightBox"]
 layout_mode = 2
 min_value = 1.0
 max_value = 10000.0
 value = 1000.0
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="BoxContainer"]
+[node name="StepsBox" type="HBoxContainer" parent="ControlPanel"]
 layout_mode = 2
 
-[node name="StepsLabel" type="Label" parent="BoxContainer/HBoxContainer3"]
+[node name="StepsLabel" type="Label" parent="ControlPanel/StepsBox"]
 layout_mode = 2
 text = "Number of Steps"
 
-[node name="StepsInput" type="SpinBox" parent="BoxContainer/HBoxContainer3"]
+[node name="StepsInput" type="SpinBox" parent="ControlPanel/StepsBox"]
 layout_mode = 2
 max_value = 15.0
+value = 6.0
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="BoxContainer"]
+[node name="DensityBox" type="HBoxContainer" parent="ControlPanel"]
 layout_mode = 2
 
-[node name="DensityLabel" type="Label" parent="BoxContainer/HBoxContainer4"]
+[node name="DensityLabel" type="Label" parent="ControlPanel/DensityBox"]
 layout_mode = 2
 text = "Initial Density"
 
-[node name="DensityIbput" type="SpinBox" parent="BoxContainer/HBoxContainer4"]
+[node name="DensityInput" type="SpinBox" parent="ControlPanel/DensityBox"]
 layout_mode = 2
 min_value = 0.01
 max_value = 1.0
 step = 0.01
-value = 0.01
+value = 0.5
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="BoxContainer"]
+[node name="SeedBox" type="HBoxContainer" parent="ControlPanel"]
 layout_mode = 2
 
-[node name="SeedLabel" type="Label" parent="BoxContainer/HBoxContainer5"]
+[node name="SeedLabel" type="Label" parent="ControlPanel/SeedBox"]
 layout_mode = 2
 text = "Seed (0 for random)"
 
-[node name="LineEdit" type="LineEdit" parent="BoxContainer/HBoxContainer5"]
+[node name="SeedInput" type="LineEdit" parent="ControlPanel/SeedBox"]
 layout_mode = 2
 text = "0"
 placeholder_text = "0"
 
-[node name="RegenerateButton" type="Button" parent="BoxContainer"]
+[node name="RegenerateButton" parent="ControlPanel" instance=ExtResource("2_yrl6l")]
 layout_mode = 2
-text = "Regenerate"
