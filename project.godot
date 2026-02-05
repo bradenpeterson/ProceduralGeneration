@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 GameManager="*res://scripts/Core/GameManager.cs"
 
+[display]
+
+window/size/always_on_top=true
+
 [dotnet]
 
 project/assembly_name="ProceduralGeneration"

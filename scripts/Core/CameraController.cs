@@ -55,7 +55,9 @@ public partial class CameraController : Camera2D
 		if (newZoom == oldZoom)
 			return;
 
-		Position = worldPoint - (worldPoint - Position) * (newZoom.X / oldZoom.X);
+		// Keep worldPoint under the cursor: (worldPoint - newPos) * newZoom == (worldPoint - Position) * oldZoom
+		float ratio = oldZoom.X / newZoom.X;
+		Position = worldPoint - (worldPoint - Position) * ratio;
 		Zoom = newZoom;
 	}
 }

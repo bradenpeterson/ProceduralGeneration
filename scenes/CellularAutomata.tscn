@@ -1,15 +1,33 @@
-[gd_scene load_steps=4 format=3 uid="uid://gopvomiaoud1"]
+[gd_scene load_steps=7 format=3 uid="uid://gopvomiaoud1"]
 
 [ext_resource type="Script" uid="uid://cxc13yje1jry5" path="res://scripts/Core/CameraController.cs" id="1_uoano"]
-[ext_resource type="Script" path="res://scripts/Algorithms/AlgorithmScene.cs" id="2_algorithm"]
+[ext_resource type="Script" uid="uid://bnqvnip40t461" path="res://scripts/Algorithms/AlgorithmScene.cs" id="2_algorithm"]
 [ext_resource type="PackedScene" uid="uid://lq60g7ba16p0" path="res://scenes/UI/PopUpMenu.tscn" id="3_popup"]
+[ext_resource type="PackedScene" uid="uid://ccl8xqnf41mrv" path="res://scenes/Renderers/CellularTileMapRenderer.tscn" id="4_renderer"]
+[ext_resource type="Script" uid="uid://crmf7i6osmv12" path="res://scripts/Algorithms/CellularAutomataController.cs" id="5_wy1us"]
+[ext_resource type="PackedScene" uid="uid://btcyocnxuosyg" path="res://scenes/UI/CellularParameters.tscn" id="6_7d6ap"]
 
 [node name="CellularAutomata" type="Node2D"]
 script = ExtResource("2_algorithm")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+position_smoothing_speed = 20.0
 script = ExtResource("1_uoano")
+ZoomMin = 0.0
+ZoomMax = 5.0
 
 [node name="ContextMenuLayer" type="CanvasLayer" parent="."]
 
 [node name="PopUpMenu" parent="ContextMenuLayer" instance=ExtResource("3_popup")]
+scale = Vector2(1.5, 1.5)
+
+[node name="CellularTileMapRenderer" parent="." instance=ExtResource("4_renderer")]
+
+[node name="CellularAutomataController" type="Node" parent="."]
+script = ExtResource("5_wy1us")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CellularParameters" parent="CanvasLayer" instance=ExtResource("6_7d6ap")]
+scale = Vector2(1.2, 1.2)

@@ -1,13 +1,15 @@
 [gd_scene load_steps=4 format=3 uid="uid://cqm4yd06b10c5"]
 
 [ext_resource type="Script" uid="uid://cxc13yje1jry5" path="res://scripts/Core/CameraController.cs" id="1_cw8d2"]
-[ext_resource type="Script" path="res://scripts/Algorithms/AlgorithmScene.cs" id="2_algorithm"]
+[ext_resource type="Script" uid="uid://bnqvnip40t461" path="res://scripts/Algorithms/AlgorithmScene.cs" id="2_algorithm"]
 [ext_resource type="PackedScene" uid="uid://lq60g7ba16p0" path="res://scenes/UI/PopUpMenu.tscn" id="3_popup"]
 
 [node name="PerlinNoise" type="Node2D"]
 script = ExtResource("2_algorithm")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+position_smoothing_speed = 20.0
 script = ExtResource("1_cw8d2")
 
 [node name="ContextMenuLayer" type="CanvasLayer" parent="."]
