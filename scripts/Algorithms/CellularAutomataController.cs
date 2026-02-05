@@ -12,7 +12,7 @@ public partial class CellularAutomataController : Node
 	[Export] public int Iterations { get; set; } = 6;
 	[Export] public int BirthThreshold { get; set; } = 5;
 	[Export] public int SurvivalThreshold { get; set; } = 4;
-	[Export] public int Seed { get; set; } = -1;
+	[Export] public int Seed { get; set; } = 0;
 
 	private CellularTileMapRenderer _renderer;
 
@@ -33,7 +33,7 @@ public partial class CellularAutomataController : Node
 	{
 		bool[,] grid = CellularAutomataGenerator.Generate(
 			Width, Height, FillProbability, Iterations, BirthThreshold, SurvivalThreshold,
-			Seed >= 0 ? Seed : (int?)null);
+			Seed > 0 ? Seed : (int?)null);
 		_renderer.Render(grid);
 	}
 }

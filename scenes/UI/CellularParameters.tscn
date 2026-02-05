@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://btcyocnxuosyg"]
+[gd_scene load_steps=2 format=3 uid="uid://btcyocnxuosyg"]
+
+[ext_resource type="Script" uid="uid://cwbnx8v4tr585" path="res://scripts/UI/HideButton.cs" id="1_67w34"]
 
 [node name="CellularParameters" type="Control"]
 layout_mode = 3
@@ -6,17 +8,22 @@ anchors_preset = 0
 offset_right = 8.0
 offset_bottom = 40.0
 
+[node name="HideButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 10.0
+offset_right = 237.0
+offset_bottom = 41.0
+text = "Hide Controls"
+script = ExtResource("1_67w34")
+
 [node name="BoxContainer" type="BoxContainer" parent="."]
 layout_mode = 1
 offset_left = 12.0
-offset_top = 10.0
-offset_right = 172.0
-offset_bottom = 288.0
+offset_top = 46.0
+offset_right = 237.0
+offset_bottom = 324.0
 vertical = true
-
-[node name="HideButton" type="Button" parent="BoxContainer"]
-layout_mode = 2
-text = "Hide Controls"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="BoxContainer"]
 layout_mode = 2
@@ -29,7 +36,7 @@ text = "Chunk Width"
 layout_mode = 2
 min_value = 1.0
 max_value = 10000.0
-value = 1.0
+value = 1000.0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="BoxContainer"]
 layout_mode = 2
@@ -42,7 +49,7 @@ text = "Chunk Height"
 layout_mode = 2
 min_value = 1.0
 max_value = 10000.0
-value = 1.0
+value = 1000.0
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="BoxContainer"]
 layout_mode = 2
