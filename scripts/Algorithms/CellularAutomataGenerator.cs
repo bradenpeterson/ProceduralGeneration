@@ -11,6 +11,7 @@ public static class CellularAutomataGenerator
 		int survivalThreshold, // wall cell stays wall if it has at least this many wall neighbours; otherwise becomes floor
 		int? seed = null) // optional seed for reproducible maps; null for random seed
 	{
+		// Check if dimensions are valid
 		if (width <= 0 || height <= 0)
 			return new bool[0, 0];
 
