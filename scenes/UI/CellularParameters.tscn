@@ -16,7 +16,7 @@ layout_mode = 0
 offset_left = 11.0
 offset_top = 8.0
 offset_right = 237.0
-offset_bottom = 41.0
+offset_bottom = 39.0
 
 [node name="ControlPanel" type="BoxContainer" parent="."]
 layout_mode = 1
@@ -31,7 +31,7 @@ layout_mode = 2
 
 [node name="WidthLabel" type="Label" parent="ControlPanel/WidthBox"]
 layout_mode = 2
-text = "Chunk Width"
+text = "Chunk Width:"
 
 [node name="WidthInput" type="SpinBox" parent="ControlPanel/WidthBox"]
 layout_mode = 2
@@ -44,7 +44,7 @@ layout_mode = 2
 
 [node name="HeightLabel" type="Label" parent="ControlPanel/HeightBox"]
 layout_mode = 2
-text = "Chunk Height"
+text = "Chunk Height:"
 
 [node name="HeightInput" type="SpinBox" parent="ControlPanel/HeightBox"]
 layout_mode = 2
@@ -57,7 +57,7 @@ layout_mode = 2
 
 [node name="StepsLabel" type="Label" parent="ControlPanel/StepsBox"]
 layout_mode = 2
-text = "Number of Steps"
+text = "Number of Steps:"
 
 [node name="StepsInput" type="SpinBox" parent="ControlPanel/StepsBox"]
 layout_mode = 2
@@ -68,7 +68,7 @@ layout_mode = 2
 
 [node name="DensityLabel" type="Label" parent="ControlPanel/DensityBox"]
 layout_mode = 2
-text = "Initial Density"
+text = "Initial Density:"
 
 [node name="DensityInput" type="SpinBox" parent="ControlPanel/DensityBox"]
 layout_mode = 2
@@ -82,7 +82,7 @@ layout_mode = 2
 
 [node name="SeedLabel" type="Label" parent="ControlPanel/SeedBox"]
 layout_mode = 2
-text = "Seed (0 for random)"
+text = "Seed (0 for random):"
 
 [node name="SeedInput" type="LineEdit" parent="ControlPanel/SeedBox"]
 layout_mode = 2

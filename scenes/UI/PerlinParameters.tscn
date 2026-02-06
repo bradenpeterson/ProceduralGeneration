@@ -1,0 +1,129 @@
+[gd_scene load_steps=4 format=3 uid="uid://bj2488npu2kgb"]
+
+[ext_resource type="Script" uid="uid://div013goubd5g" path="res://scripts/UI/PerlinParameters.cs" id="1_1lacy"]
+[ext_resource type="PackedScene" uid="uid://dtvj5kwryqqct" path="res://scenes/UI/HideButton.tscn" id="2_x3j7k"]
+[ext_resource type="PackedScene" uid="uid://dwooo3gi1ypeg" path="res://scenes/UI/RegenerateButton.tscn" id="3_yjodr"]
+
+[node name="PerlinParameters" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+size_flags_horizontal = 0
+script = ExtResource("1_1lacy")
+
+[node name="HideButton" parent="." instance=ExtResource("2_x3j7k")]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 8.0
+offset_right = 247.0
+offset_bottom = 39.0
+
+[node name="ControlPanel" type="BoxContainer" parent="."]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 46.0
+offset_right = 248.0
+offset_bottom = 420.0
+vertical = true
+
+[node name="WidthBox" type="HBoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="WidthLabel" type="Label" parent="ControlPanel/WidthBox"]
+layout_mode = 2
+text = "Chunk Width:"
+
+[node name="WidthInput" type="SpinBox" parent="ControlPanel/WidthBox"]
+layout_mode = 2
+
+[node name="HeightBox" type="HBoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="HeightLabel" type="Label" parent="ControlPanel/HeightBox"]
+layout_mode = 2
+text = "Chunk Height:"
+
+[node name="HeightInput" type="SpinBox" parent="ControlPanel/HeightBox"]
+layout_mode = 2
+
+[node name="FBMBox" type="BoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="FBMLabel" type="Label" parent="ControlPanel/FBMBox"]
+layout_mode = 2
+text = "Use FBM:"
+
+[node name="FBMInput" type="CheckBox" parent="ControlPanel/FBMBox"]
+layout_mode = 2
+
+[node name="OctavesBox" type="HBoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="OctavesLabel" type="Label" parent="ControlPanel/OctavesBox"]
+layout_mode = 2
+text = "Noise Octaves:"
+
+[node name="OctavesInput" type="SpinBox" parent="ControlPanel/OctavesBox"]
+layout_mode = 2
+
+[node name="SeedBox" type="HBoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="SeedLabel" type="Label" parent="ControlPanel/SeedBox"]
+layout_mode = 2
+text = "Seed (0 for random):"
+
+[node name="SeedInput" type="LineEdit" parent="ControlPanel/SeedBox"]
+layout_mode = 2
+
+[node name="DeepWaterBox" type="HBoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="DeepWaterLabel" type="Label" parent="ControlPanel/DeepWaterBox"]
+layout_mode = 2
+text = "Deep Water:"
+
+[node name="DeepWaterInput" type="SpinBox" parent="ControlPanel/DeepWaterBox"]
+layout_mode = 2
+
+[node name="ShallowWaterBox" type="HBoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="ShallowWaterLabel" type="Label" parent="ControlPanel/ShallowWaterBox"]
+layout_mode = 2
+text = "Shallow Water:"
+
+[node name="ShallowWaterInput" type="SpinBox" parent="ControlPanel/ShallowWaterBox"]
+layout_mode = 2
+
+[node name="BeachBox" type="HBoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="BeachLabel" type="Label" parent="ControlPanel/BeachBox"]
+layout_mode = 2
+text = "Beach:"
+
+[node name="BeachInput" type="SpinBox" parent="ControlPanel/BeachBox"]
+layout_mode = 2
+
+[node name="GrassBox" type="HBoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="GrassLabel" type="Label" parent="ControlPanel/GrassBox"]
+layout_mode = 2
+text = "Grass:"
+
+[node name="GrassInput" type="SpinBox" parent="ControlPanel/GrassBox"]
+layout_mode = 2
+
+[node name="MountainBox" type="HBoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="MountainLabel" type="Label" parent="ControlPanel/MountainBox"]
+layout_mode = 2
+text = "Mountain:"
+
+[node name="MountainInput" type="SpinBox" parent="ControlPanel/MountainBox"]
+layout_mode = 2
+
+[node name="RegenerateButton" parent="ControlPanel" instance=ExtResource("3_yjodr")]
+layout_mode = 2

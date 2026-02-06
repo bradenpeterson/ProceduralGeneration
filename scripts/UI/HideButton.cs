@@ -7,7 +7,6 @@ public partial class HideButton : Button
 	public override void _Ready()
 	{
 		_boxContainer = GetParent().GetNode<BoxContainer>("ControlPanel");
-		GD.Print("HideButton: _boxContainer: ", _boxContainer);
 		UpdateButtonText();
 	}
 
