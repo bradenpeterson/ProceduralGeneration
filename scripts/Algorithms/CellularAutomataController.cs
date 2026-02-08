@@ -27,6 +27,7 @@ public partial class CellularAutomataController : Node
 			GD.PrintErr("CellularAutomataController: Could not find CellularTileMapRenderer in scene tree");
 			return;
 		}
+		
 		if (_camera != null)
 			_renderer.GridGenerated += _camera.CenterCameraOnGrid;
 

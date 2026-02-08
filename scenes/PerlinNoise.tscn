@@ -1,19 +1,14 @@
 [gd_scene load_steps=7 format=3 uid="uid://cqm4yd06b10c5"]
 
-[ext_resource type="Script" uid="uid://cxc13yje1jry5" path="res://scripts/Core/CameraController.cs" id="1_cw8d2"]
 [ext_resource type="Script" uid="uid://bnqvnip40t461" path="res://scripts/Algorithms/AlgorithmScene.cs" id="2_algorithm"]
 [ext_resource type="PackedScene" uid="uid://lq60g7ba16p0" path="res://scenes/UI/PopUpMenu.tscn" id="3_popup"]
 [ext_resource type="PackedScene" uid="uid://cypeuuf8gaj3a" path="res://scenes/Renderers/PerlinTileMapRenderer.tscn" id="4_t2w2u"]
 [ext_resource type="Script" uid="uid://chtpdedqxl0l" path="res://scripts/Algorithms/PerlinController.cs" id="5_tms16"]
 [ext_resource type="PackedScene" uid="uid://bj2488npu2kgb" path="res://scenes/UI/PerlinParameters.tscn" id="6_ei472"]
+[ext_resource type="PackedScene" uid="uid://d2r5yjdqhlc07" path="res://scenes/AlgorithmSceneCamera.tscn" id="6_t2w2u"]
 
 [node name="PerlinNoise" type="Node2D"]
 script = ExtResource("2_algorithm")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position_smoothing_enabled = true
-position_smoothing_speed = 20.0
-script = ExtResource("1_cw8d2")
 
 [node name="ContextMenuLayer" type="CanvasLayer" parent="."]
 
@@ -28,3 +23,5 @@ script = ExtResource("5_tms16")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="PerlinParameters" parent="CanvasLayer" instance=ExtResource("6_ei472")]
+
+[node name="AlgorithmSceneCamera" parent="." instance=ExtResource("6_t2w2u")]

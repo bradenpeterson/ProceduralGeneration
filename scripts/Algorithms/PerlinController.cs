@@ -20,16 +20,22 @@ public partial class PerlinController : Node
 	[Export] public float MountainThreshold { get; set; } = 0.8f;
 
 	private PerlinTileMapRenderer _renderer;
+	private CameraController _camera;
 
 	public override void _Ready()
 	{
 		// Find the renderer in the scene tree (could be sibling or child)
 		_renderer = GetParent()?.GetNodeOrNull<PerlinTileMapRenderer>("PerlinTileMapRenderer");
+		_camera = GetParent()?.GetNodeOrNull<CameraController>("AlgorithmSceneCamera");
 		if (_renderer == null)
 		{
 			GD.PrintErr("PerlinController: Could not find PerlinTileMapRenderer in scene tree");
 			return;
 		}
+
+		if (_camera != null)
+			_renderer.GridGenerated += _camera.CenterCameraOnGrid;
+
 		Regenerate();
 	}
 

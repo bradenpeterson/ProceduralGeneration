@@ -18,27 +18,16 @@ public partial class PerlinTileMapRenderer : Node2D
 	[Export] public float GrassThreshold;
 	[Export] public float MountainThreshold;
 
+	[Signal] public delegate void GridGeneratedEventHandler(int width, int height, int cellSize);
+
 	private float[,] _grid;
 	public void Render(float[,] grid, float deepWaterThreshold, float shallowWaterThreshold, float beachThreshold, float grassThreshold, float mountainThreshold)
 	{
 		if (_grid != null && _grid.GetLength(0) > 0 && _grid.GetLength(1) > 0)
 		{
-			CenterCameraOnGrid(_grid.GetLength(0), _grid.GetLength(1));
+			EmitSignal(SignalName.GridGenerated, _grid.GetLength(0), _grid.GetLength(1), CellSizePx);
 		}
 		QueueRedraw();
-	}
-
-	// Moves the scene's Camera2D to the center of the drawn grid.
-	private void CenterCameraOnGrid(int width, int height)
-	{
-		var camera = GetParent()?.GetNodeOrNull<Camera2D>("Camera2D");
-		if (camera != null)
-		{
-			camera.PositionSmoothingEnabled = false;
-			camera.Position = new Vector2(width * CellSizePx / 2f, height * CellSizePx / 2f);
-			camera.ForceUpdateTransform();
-			camera.PositionSmoothingEnabled = true;
-		}
 	}
 
 	public override void _Draw()

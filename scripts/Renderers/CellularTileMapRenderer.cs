@@ -19,10 +19,6 @@ public partial class CellularTileMapRenderer : Node2D
 		{
 			EmitSignal(SignalName.GridGenerated, _grid.GetLength(0), _grid.GetLength(1), CellSizePx);
 		}
-		else
-		{
-			GD.PrintErr("CellularTileMapRenderer: Received empty grid to render");
-		}
 		QueueRedraw();
 	}
 
