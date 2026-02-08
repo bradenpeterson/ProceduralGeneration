@@ -10,6 +10,7 @@ public partial class PerlinTileMapRenderer : Node2D
 	[Export] public Color BeachColor { get; set; } = new Color(0.9f, 0.8f, 0.6f);
 	[Export] public Color GrassColor { get; set; } = new Color(0.4f, 0.6f, 0.3f);
 	[Export] public Color MountainColor { get; set; } = new Color(0.5f, 0.5f, 0.5f);
+	[Export] public Color SnowyPeakColor { get; set; } = new Color(0.95f, 0.95f, 1.0f);
 
 	[ExportGroup("Visualization Parameters")]
 	[Export] public float DeepWaterThreshold;
@@ -60,8 +61,10 @@ public partial class PerlinTileMapRenderer : Node2D
 					c = BeachColor;
 				else if (_grid[x, y] < GrassThreshold)
 					c = GrassColor;
-				else
+				else if (_grid[x, y] < MountainThreshold)
 					c = MountainColor;
+				else
+					c = SnowyPeakColor;
 				DrawRect(new Rect2(px, py, CellSizePx, CellSizePx), c);
 			}
 		}

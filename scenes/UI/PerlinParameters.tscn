@@ -71,7 +71,7 @@ text = "Noise Octaves:"
 [node name="OctavesInput" type="SpinBox" parent="ControlPanel/OctavesBox"]
 layout_mode = 2
 min_value = 1.0
-max_value = 32.0
+max_value = 16.0
 value = 1.0
 
 [node name="SeedBox" type="HBoxContainer" parent="ControlPanel"]
