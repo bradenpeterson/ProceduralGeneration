@@ -34,6 +34,9 @@ text = "Chunk Width:"
 
 [node name="WidthInput" type="SpinBox" parent="ControlPanel/WidthBox"]
 layout_mode = 2
+min_value = 1.0
+max_value = 10000.0
+value = 1.0
 
 [node name="HeightBox" type="HBoxContainer" parent="ControlPanel"]
 layout_mode = 2
@@ -44,6 +47,9 @@ text = "Chunk Height:"
 
 [node name="HeightInput" type="SpinBox" parent="ControlPanel/HeightBox"]
 layout_mode = 2
+min_value = 1.0
+max_value = 10000.0
+value = 1.0
 
 [node name="FBMBox" type="BoxContainer" parent="ControlPanel"]
 layout_mode = 2
@@ -64,6 +70,9 @@ text = "Noise Octaves:"
 
 [node name="OctavesInput" type="SpinBox" parent="ControlPanel/OctavesBox"]
 layout_mode = 2
+min_value = 1.0
+max_value = 32.0
+value = 1.0
 
 [node name="SeedBox" type="HBoxContainer" parent="ControlPanel"]
 layout_mode = 2
@@ -84,6 +93,9 @@ text = "Deep Water:"
 
 [node name="DeepWaterInput" type="SpinBox" parent="ControlPanel/DeepWaterBox"]
 layout_mode = 2
+min_value = -1.0
+max_value = 1.0
+step = 0.01
 
 [node name="ShallowWaterBox" type="HBoxContainer" parent="ControlPanel"]
 layout_mode = 2
@@ -94,6 +106,9 @@ text = "Shallow Water:"
 
 [node name="ShallowWaterInput" type="SpinBox" parent="ControlPanel/ShallowWaterBox"]
 layout_mode = 2
+min_value = -1.0
+max_value = 1.0
+step = 0.01
 
 [node name="BeachBox" type="HBoxContainer" parent="ControlPanel"]
 layout_mode = 2
@@ -104,6 +119,9 @@ text = "Beach:"
 
 [node name="BeachInput" type="SpinBox" parent="ControlPanel/BeachBox"]
 layout_mode = 2
+min_value = -1.0
+max_value = 1.0
+step = 0.01
 
 [node name="GrassBox" type="HBoxContainer" parent="ControlPanel"]
 layout_mode = 2
@@ -114,6 +132,9 @@ text = "Grass:"
 
 [node name="GrassInput" type="SpinBox" parent="ControlPanel/GrassBox"]
 layout_mode = 2
+min_value = -1.0
+max_value = 1.0
+step = 0.01
 
 [node name="MountainBox" type="HBoxContainer" parent="ControlPanel"]
 layout_mode = 2
@@ -124,6 +145,9 @@ text = "Mountain:"
 
 [node name="MountainInput" type="SpinBox" parent="ControlPanel/MountainBox"]
 layout_mode = 2
+min_value = -1.0
+max_value = 1.0
+step = 0.01
 
 [node name="RegenerateButton" parent="ControlPanel" instance=ExtResource("3_yjodr")]
 layout_mode = 2

@@ -23,6 +23,13 @@ public partial class PerlinTileMapRenderer : Node2D
 	private float[,] _grid;
 	public void Render(float[,] grid, float deepWaterThreshold, float shallowWaterThreshold, float beachThreshold, float grassThreshold, float mountainThreshold)
 	{
+		_grid = grid;
+		DeepWaterThreshold = deepWaterThreshold;
+		ShallowWaterThreshold = shallowWaterThreshold;
+		BeachThreshold = beachThreshold;
+		GrassThreshold = grassThreshold;
+		MountainThreshold = mountainThreshold;
+
 		if (_grid != null && _grid.GetLength(0) > 0 && _grid.GetLength(1) > 0)
 		{
 			EmitSignal(SignalName.GridGenerated, _grid.GetLength(0), _grid.GetLength(1), CellSizePx);

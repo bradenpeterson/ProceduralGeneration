@@ -22,6 +22,7 @@ public partial class CellularParameters : Control
 
 		// Initialize UI from controller's current values
 		_widthSpinBox.Value = _controller.Width;
+		GD.Print("_widthSpinBox.Value: ", _widthSpinBox.Value, "controller.Width: ", _controller.Width);
 		_heightSpinBox.Value = _controller.Height;
 		_numStepsSpinBox.Value = _controller.Iterations;
 		_initialDensitySpinBox.Value = _controller.FillProbability;

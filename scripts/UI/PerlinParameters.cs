@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class PerlinParameters : Node
+public partial class PerlinParameters : Control
 {
 	private PerlinController _controller;
 	private SpinBox _widthSpinBox;
@@ -15,8 +15,6 @@ public partial class PerlinParameters : Node
 	private SpinBox _grassSpinBox;
 	private SpinBox _mountainSpinBox;
 	private Button _regenerateButton;
-
-
 
 	public override void _Ready()
 	{
@@ -35,6 +33,8 @@ public partial class PerlinParameters : Node
 
 		// Initialize UI from controller's current values
 		_widthSpinBox.Value = _controller.Width;
+		GD.Print("_widthSpinBox.Value: ", _widthSpinBox.Value, "controller.Width: ", _controller.Width);
+
 		_heightSpinBox.Value = _controller.Height;
 		_fbmCheckBox.ButtonPressed = _controller.FBM;
 		_octavesSpinBox.Value = _controller.Octaves;
