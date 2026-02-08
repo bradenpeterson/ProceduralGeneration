@@ -77,6 +77,28 @@ max_value = 1.0
 step = 0.01
 value = 0.01
 
+[node name="BirthBox" type="HBoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="BirthLabel" type="Label" parent="ControlPanel/BirthBox"]
+layout_mode = 2
+text = "Birth Threshold"
+
+[node name="BirthInput" type="SpinBox" parent="ControlPanel/BirthBox"]
+layout_mode = 2
+max_value = 8.0
+
+[node name="SurvivalBox" type="HBoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="SurvivalLabel" type="Label" parent="ControlPanel/SurvivalBox"]
+layout_mode = 2
+text = "Survival Threshold: "
+
+[node name="SurvivalInput" type="SpinBox" parent="ControlPanel/SurvivalBox"]
+layout_mode = 2
+max_value = 8.0
+
 [node name="SeedBox" type="HBoxContainer" parent="ControlPanel"]
 layout_mode = 2
 

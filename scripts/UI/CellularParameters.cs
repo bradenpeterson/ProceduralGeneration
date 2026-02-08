@@ -7,6 +7,8 @@ public partial class CellularParameters : Control
 	private SpinBox _heightSpinBox;
 	private SpinBox _numStepsSpinBox;
 	private SpinBox _initialDensitySpinBox;
+	private SpinBox _birthThresholdSpinBox;
+	private SpinBox _survivalThresholdSpinBox;
 	private LineEdit _seedLineEdit;
 	private Button _regenerateButton;
 
@@ -17,15 +19,18 @@ public partial class CellularParameters : Control
 		_heightSpinBox = GetNode<SpinBox>("ControlPanel/HeightBox/HeightInput");
 		_numStepsSpinBox = GetNode<SpinBox>("ControlPanel/StepsBox/StepsInput");
 		_initialDensitySpinBox = GetNode<SpinBox>("ControlPanel/DensityBox/DensityInput");
+		_birthThresholdSpinBox = GetNode<SpinBox>("ControlPanel/BirthBox/BirthInput");
+		_survivalThresholdSpinBox = GetNode<SpinBox>("ControlPanel/SurvivalBox/SurvivalInput");
 		_seedLineEdit = GetNode<LineEdit>("ControlPanel/SeedBox/SeedInput");
 		_regenerateButton = GetNode<Button>("ControlPanel/RegenerateButton");
 
 		// Initialize UI from controller's current values
 		_widthSpinBox.Value = _controller.Width;
-		GD.Print("_widthSpinBox.Value: ", _widthSpinBox.Value, "controller.Width: ", _controller.Width);
 		_heightSpinBox.Value = _controller.Height;
 		_numStepsSpinBox.Value = _controller.Iterations;
 		_initialDensitySpinBox.Value = _controller.FillProbability;
+		_birthThresholdSpinBox.Value = _controller.BirthThreshold;
+		_survivalThresholdSpinBox.Value = _controller.SurvivalThreshold;
 		_seedLineEdit.Text = _controller.Seed.ToString();
 
 		_regenerateButton.Pressed += OnRegeneratePressed;
@@ -37,6 +42,8 @@ public partial class CellularParameters : Control
 		_controller.Height = (int)_heightSpinBox.Value;
 		_controller.Iterations = (int)_numStepsSpinBox.Value;
 		_controller.FillProbability = (float)_initialDensitySpinBox.Value;
+		_controller.BirthThreshold = (int)_birthThresholdSpinBox.Value;
+		_controller.SurvivalThreshold = (int)_survivalThresholdSpinBox.Value;
 
 		if (int.TryParse(_seedLineEdit.Text, out int seed))	
 		{
