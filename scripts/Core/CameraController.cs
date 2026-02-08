@@ -8,7 +8,8 @@ public partial class CameraController : Camera2D
 	[Export] public float ZoomStep { get; set; } = 1.15f;
 
 	private bool _isDragging;
-	private Vector2 _lastMouseWorld;
+	private Vector2 _dragStartCameraPos;
+	private Vector2 _dragStartMousePos;
 
 	public override void _UnhandledInput(InputEvent @event)
 	{
@@ -19,32 +20,37 @@ public partial class CameraController : Camera2D
 				if (mouseButton.Pressed)
 				{
 					_isDragging = true;
-					_lastMouseWorld = GetGlobalMousePosition();
+					_dragStartCameraPos = Position;
+					_dragStartMousePos = GetGlobalMousePosition();
+					GetViewport().SetInputAsHandled();
 				}
 				else
 				{
 					_isDragging = false;
+					GetViewport().SetInputAsHandled();
 				}
 			}
 			else if (mouseButton.ButtonIndex == MouseButton.WheelUp && mouseButton.Pressed)
 			{
 				ZoomTowardPoint(GetGlobalMousePosition(), ZoomStep);
+				GetViewport().SetInputAsHandled();
 			}
 			else if (mouseButton.ButtonIndex == MouseButton.WheelDown && mouseButton.Pressed)
 			{
 				ZoomTowardPoint(GetGlobalMousePosition(), 1.0f / ZoomStep);
+				GetViewport().SetInputAsHandled();
 			}
 		}
-		else if (@event is InputEventMouseMotion motion && _isDragging)
+		else if (@event is InputEventMouseMotion && _isDragging)
 		{
 			Vector2 currentMouseWorld = GetGlobalMousePosition();
-			Position -= currentMouseWorld - _lastMouseWorld;
-			_lastMouseWorld = currentMouseWorld;
+			Position = _dragStartCameraPos - (currentMouseWorld - _dragStartMousePos);
+			GetViewport().SetInputAsHandled();
 		}
 		else if (@event is InputEventMagnifyGesture magnify)
 		{
-			// Mac trackpad pinch-to-zoom sends this instead of WheelUp/WheelDown
 			ZoomTowardPoint(GetGlobalMousePosition(), magnify.Factor);
+			GetViewport().SetInputAsHandled();
 		}
 	}
 
@@ -55,7 +61,7 @@ public partial class CameraController : Camera2D
 		if (newZoom == oldZoom)
 			return;
 
-		// Keep worldPoint under the cursor: (worldPoint - newPos) * newZoom == (worldPoint - Position) * oldZoom
+		// Keep worldPoint under the cursor
 		float ratio = oldZoom.X / newZoom.X;
 		Position = worldPoint - (worldPoint - Position) * ratio;
 		Zoom = newZoom;

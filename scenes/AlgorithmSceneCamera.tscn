@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://d2r5yjdqhlc07"]
+
+[ext_resource type="Script" uid="uid://cxc13yje1jry5" path="res://scripts/Core/CameraController.cs" id="1_n2cwv"]
+
+[node name="AlgorithmSceneCamera" type="Camera2D"]
+position_smoothing_enabled = true
+position_smoothing_speed = 20.0
+script = ExtResource("1_n2cwv")
+ZoomMin = 0.0
+ZoomMax = 6.0

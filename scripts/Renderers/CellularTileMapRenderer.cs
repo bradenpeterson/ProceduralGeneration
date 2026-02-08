@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class CellularTileMapRenderer : Node2D, IWorldRenderer<bool>
+public partial class CellularTileMapRenderer : Node2D
 {
 	[ExportGroup("Draw Style (testing)")]
 	[Export] public int CellSizePx { get; set; } = 8;
@@ -21,10 +21,10 @@ public partial class CellularTileMapRenderer : Node2D, IWorldRenderer<bool>
 		QueueRedraw();
 	}
 
-	/// Moves the scene's Camera2D to the center of the drawn grid.
+	// Moves the scene's Camera2D to the center of the drawn grid.
 	private void CenterCameraOnGrid(int width, int height)
 	{
-		var camera = GetParent()?.GetNodeOrNull<Camera2D>("Camera2D");
+		var camera = GetParent()?.GetNodeOrNull<Camera2D>("AlgorithmSceneCamera");
 		if (camera != null)
 		{
 			camera.PositionSmoothingEnabled = false;
