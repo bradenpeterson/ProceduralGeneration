@@ -9,6 +9,7 @@ public partial class CellularTileMapRenderer : Node2D
 	[Export] public Color GroundColor { get; set; } = new Color(0.4f, 0.6f, 0.3f);  // false = floor/ground
 
 	private bool[,] _grid;
+	[Signal] public delegate void GridGeneratedEventHandler(int width, int height, int cellSize);
 
 	/// Renders the grid using the current draw style. Pure visualization - no generation logic.
 	public void Render(bool[,] grid)
@@ -16,22 +17,13 @@ public partial class CellularTileMapRenderer : Node2D
 		_grid = grid;
 		if (_grid != null && _grid.GetLength(0) > 0 && _grid.GetLength(1) > 0)
 		{
-			CenterCameraOnGrid(_grid.GetLength(0), _grid.GetLength(1));
+			EmitSignal(SignalName.GridGenerated, _grid.GetLength(0), _grid.GetLength(1), CellSizePx);
+		}
+		else
+		{
+			GD.PrintErr("CellularTileMapRenderer: Received empty grid to render");
 		}
 		QueueRedraw();
-	}
-
-	// Moves the scene's Camera2D to the center of the drawn grid.
-	private void CenterCameraOnGrid(int width, int height)
-	{
-		var camera = GetParent()?.GetNodeOrNull<Camera2D>("AlgorithmSceneCamera");
-		if (camera != null)
-		{
-			camera.PositionSmoothingEnabled = false;
-			camera.Position = new Vector2(width * CellSizePx / 2f, height * CellSizePx / 2f);
-			camera.ForceUpdateTransform();
-			camera.PositionSmoothingEnabled = true;
-		}
 	}
 
 	public override void _Draw()

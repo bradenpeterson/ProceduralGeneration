@@ -66,4 +66,15 @@ public partial class CameraController : Camera2D
 		Position = worldPoint - (worldPoint - Position) * ratio;
 		Zoom = newZoom;
 	}
+
+	/// Centers the camera on the given grid dimensions. Called via signal from renderer.
+	public void CenterCameraOnGrid(int width, int height, int cellSize)
+	{
+		bool wasSmoothing = PositionSmoothingEnabled;
+		PositionSmoothingEnabled = false;
+		Position = new Vector2(width * cellSize / 2f, height * cellSize / 2f);
+		ForceUpdateTransform();
+		PositionSmoothingEnabled = wasSmoothing;
+	}
+
 }

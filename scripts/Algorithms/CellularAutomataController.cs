@@ -15,16 +15,22 @@ public partial class CellularAutomataController : Node
 	[Export] public int Seed { get; set; } = 0;
 
 	private CellularTileMapRenderer _renderer;
+	private CameraController _camera;
 
 	public override void _Ready()
 	{
-		// Find the renderer in the scene tree (could be sibling or child)
-		_renderer = GetParent()?.GetNodeOrNull<CellularTileMapRenderer>("CellularTileMapRenderer");
+		var parent = GetParent();
+		_renderer = parent?.GetNodeOrNull<CellularTileMapRenderer>("CellularTileMapRenderer");
+		_camera = parent?.GetNodeOrNull<CameraController>("AlgorithmSceneCamera");
 		if (_renderer == null)
 		{
 			GD.PrintErr("CellularAutomataController: Could not find CellularTileMapRenderer in scene tree");
 			return;
 		}
+		if (_camera != null)
+			_renderer.GridGenerated += _camera.CenterCameraOnGrid;
+
+		// Run synchronously so centering happens before first frame (no visible jump)
 		Regenerate();
 	}
 
