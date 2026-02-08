@@ -4,8 +4,16 @@ using System.Linq;
 
 public static class PerlinGenerator
 {
-    private static int[] P; // Permutation table
-    private static Vector2[] G; // Gradient table
+    private static int[] PermutationTable;
+    private static Vector2[] GradientsTable = new Vector2[] {
+        new Vector2(1, 0), new Vector2(-1, 0), new Vector2(0, 1), new Vector2(0,-1),
+        new Vector2(1, 1).Normalized(), new Vector2(-1, 1).Normalized(),
+        new Vector2(1,-1).Normalized(), new Vector2(-1,-1).Normalized(),
+        new Vector2(2, 1).Normalized(), new Vector2(-2, 1).Normalized(),
+        new Vector2(2,-1).Normalized(), new Vector2(-2,-1).Normalized(),
+        new Vector2(1, 2).Normalized(), new Vector2(-1, 2).Normalized(),
+        new Vector2(1,-2).Normalized(), new Vector2(-1,-2).Normalized()
+    };
 
     public static float[,] Generate(
         int width,
@@ -27,9 +35,12 @@ public static class PerlinGenerator
         {
             for (int j = 0; j < height; j++)
             {
+                float x = i * scale;
+                float y = j * scale;
+                
                 float noiseValue = fbm
-                    ? FractalNoise2D(i, j, octaves, persistence, scale)
-                    : PerlinNoise2D(i * scale, j * scale);
+                    ? FractalNoise2D(x, y, octaves, persistence)
+                    : PerlinNoise2D(x, y);
                 noiseMap[i, j] = noiseValue;
             }
         }
@@ -41,27 +52,18 @@ public static class PerlinGenerator
     {
         Random rng = seed.HasValue ? new Random(seed.Value) : new Random();
 
-        // Initialize permutation table P with values 0-255 in random order
-        P = Enumerable.Range(0, 256).ToArray();
-        for (int i = P.Length - 1; i > 0; i--)
+        // Initialize permutation table PermutationTable with values 0-255 in random order
+        PermutationTable = Enumerable.Range(0, 256).ToArray();
+        for (int i = PermutationTable.Length - 1; i > 0; i--)
         {
             int j = rng.Next(i + 1);
-            int temp = P[i];
-            P[i] = P[j];
-            P[j] = temp;
+            int temp = PermutationTable[i];
+            PermutationTable[i] = PermutationTable[j];
+            PermutationTable[j] = temp;
         }
 
-        // Extend P to size 512 by duplicating the first 256 values
-        P = P.Concat(P).ToArray();
-
-        // Initialize gradient table G with random unit vectors
-        const int gradientCount = 12;
-        G = new Vector2[gradientCount];
-        for (int i = 0; i < gradientCount; i++)
-        {
-            double angle = rng.NextDouble() * Math.PI * 2.0;
-            G[i] = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-        }
+        // Extend PermutationTable to size 512 by duplicating the first 256 values
+        PermutationTable = PermutationTable.Concat(PermutationTable).ToArray();
     }
     
     public static float PerlinNoise2D(float x, float y)
@@ -77,28 +79,22 @@ public static class PerlinGenerator
         float dy = y - y0;
 
         // Get permutation values for each grid corner
-        int p00 = P[P[x0 & 255] + (y0 & 255)];
-        int p10 = P[P[x1 & 255] + (y0 & 255)];
-        int p01 = P[P[x0 & 255] + (y1 & 255)];
-        int p11 = P[P[x1 & 255] + (y1 & 255)];
-
-        // Map permutation values to gradient table indices using modulo
-        int gIndex00 = p00 % G.Length;
-        int gIndex10 = p10 % G.Length;
-        int gIndex01 = p01 % G.Length;
-        int gIndex11 = p11 % G.Length;
+        int p00 = PermutationTable[PermutationTable[x0 & 255] + (y0 & 255)] & (GradientsTable.Length - 1);
+        int p10 = PermutationTable[PermutationTable[x1 & 255] + (y0 & 255)] & (GradientsTable.Length - 1);
+        int p01 = PermutationTable[PermutationTable[x0 & 255] + (y1 & 255)] & (GradientsTable.Length - 1);
+        int p11 = PermutationTable[PermutationTable[x1 & 255] + (y1 & 255)] & (GradientsTable.Length - 1);
 
         // Select gradient vectors from the gradient table
-        Vector2 g00 = G[gIndex00];
-        Vector2 g10 = G[gIndex10];
-        Vector2 g01 = G[gIndex01];
-        Vector2 g11 = G[gIndex11];
+        Vector2 g00 = GradientsTable[p00];
+        Vector2 g10 = GradientsTable[p10];
+        Vector2 g01 = GradientsTable[p01];
+        Vector2 g11 = GradientsTable[p11];
 
         // Calculate dot products
-        float d00 = g00.Dot(new Vector2(dx, dy));
-        float d10 = g10.Dot(new Vector2(dx - 1, dy));
-        float d01 = g01.Dot(new Vector2(dx, dy - 1));
-        float d11 = g11.Dot(new Vector2(dx - 1, dy - 1));
+        float d00 = g00.Dot(new Vector2(dx, dy).Normalized());
+        float d10 = g10.Dot(new Vector2(dx - 1, dy).Normalized());
+        float d01 = g01.Dot(new Vector2(dx, dy - 1).Normalized());
+        float d11 = g11.Dot(new Vector2(dx - 1, dy - 1).Normalized());
 
         // Apply smooth interpolation function (ease curve)
         float smoothX = SmoothStep(dx);
@@ -115,11 +111,11 @@ public static class PerlinGenerator
         return t*t*t*(t*(t*6-15)+10);
     }
 
-    public static float FractalNoise2D(float x, float y, int octaves, float persistence, float scale)
+    public static float FractalNoise2D(float x, float y, int octaves, float persistence)
     {
         float total = 0;
         float amplitude = 1;
-        float frequency = scale;
+        float frequency = 1;
         float maxValue = 0;
 
         for (int i = 0; i < octaves; i++)
@@ -130,7 +126,7 @@ public static class PerlinGenerator
             frequency *= 2;
         }
 
-        return total / maxValue; // Normalize to [-1, 1] range
+        return total / maxValue;
     }
 }
 

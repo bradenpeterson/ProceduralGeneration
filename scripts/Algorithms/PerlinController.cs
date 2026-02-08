@@ -13,11 +13,11 @@ public partial class PerlinController : Node
 	[Export] public int Seed { get; set; } = 0;
 
 	[ExportGroup("Visualization Parameters")]
-	[Export] public float DeepWaterThreshold { get; set; } = -0.5f;
-	[Export] public float ShallowWaterThreshold { get; set; } = -0.2f;
-	[Export] public float BeachThreshold { get; set; } = 0f;
-	[Export] public float GrassThreshold { get; set; } = 0.2f;
-	[Export] public float MountainThreshold { get; set; } = 0.6f;
+	[Export] public float DeepWaterThreshold { get; set; } = -0.55f;
+	[Export] public float ShallowWaterThreshold { get; set; } = -0.15f;
+	[Export] public float BeachThreshold { get; set; } = 0.05f;
+	[Export] public float GrassThreshold { get; set; } = 0.45f;
+	[Export] public float MountainThreshold { get; set; } = 0.75f;
 
 	private PerlinTileMapRenderer _renderer;
 	private CameraController _camera;

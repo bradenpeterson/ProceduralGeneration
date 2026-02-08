@@ -33,8 +33,6 @@ public partial class PerlinParameters : Control
 
 		// Initialize UI from controller's current values
 		_widthSpinBox.Value = _controller.Width;
-		GD.Print("_widthSpinBox.Value: ", _widthSpinBox.Value, "controller.Width: ", _controller.Width);
-
 		_heightSpinBox.Value = _controller.Height;
 		_fbmCheckBox.ButtonPressed = _controller.FBM;
 		_octavesSpinBox.Value = _controller.Octaves;
