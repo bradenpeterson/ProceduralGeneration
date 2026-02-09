@@ -36,7 +36,7 @@ public partial class CellularTileMapRenderer : Node2D
 			{
 				float px = x * CellSizePx;
 				float py = y * CellSizePx;
-				Color c = _grid[x, y] ? WaterColor : GroundColor;
+				Color c = _grid[x, y] ? GroundColor : WaterColor;
 				DrawRect(new Rect2(px, py, CellSizePx, CellSizePx), c);
 			}
 		}
