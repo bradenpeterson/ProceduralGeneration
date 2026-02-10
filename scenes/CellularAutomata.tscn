@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bnqvnip40t461" path="res://scripts/Algorithms/AlgorithmScene.cs" id="2_algorithm"]
 [ext_resource type="PackedScene" uid="uid://lq60g7ba16p0" path="res://scenes/UI/PopUpMenu.tscn" id="3_popup"]
 [ext_resource type="PackedScene" uid="uid://ccl8xqnf41mrv" path="res://scenes/Renderers/CellularTileMapRenderer.tscn" id="4_renderer"]
-[ext_resource type="Script" uid="uid://crmf7i6osmv12" path="res://scripts/Algorithms/CellularAutomataController.cs" id="5_wy1us"]
+[ext_resource type="Script" uid="uid://w0cmda5vcrx" path="res://scripts/Algorithms/CellularAutomataController.cs" id="5_wy1us"]
 [ext_resource type="PackedScene" uid="uid://d2r5yjdqhlc07" path="res://scenes/AlgorithmSceneCamera.tscn" id="6_6yysf"]
 [ext_resource type="PackedScene" uid="uid://btcyocnxuosyg" path="res://scenes/UI/CellularParameters.tscn" id="6_7d6ap"]
 
