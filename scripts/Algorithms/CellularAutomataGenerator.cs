@@ -55,7 +55,7 @@ public static class CellularAutomataGenerator
 				int neighborX = cellX + offsetX;
 				int neighborY = cellY + offsetY;
 				if (neighborX < 0 || neighborX >= width || neighborY < 0 || neighborY >= height)
-					count++;
+					continue;
 				else if (grid[neighborX, neighborY])
 					count++;
 			}
