@@ -6,8 +6,8 @@ using System;
 public partial class CellularAutomataController : Node
 {
 	[ExportGroup("Generation Parameters")]
-	[Export] public int Width { get; set; } = 1000;
-	[Export] public int Height { get; set; } = 1000;
+	[Export] public int Width { get; set; } = 200;
+	[Export] public int Height { get; set; } = 200;
 	[Export] public float FillProbability { get; set; } = 0.45f;
 	[Export] public int Iterations { get; set; } = 6;
 	[Export] public int BirthThreshold { get; set; } = 5;
