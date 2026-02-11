@@ -9,13 +9,13 @@ public partial class WaveCollapseController : Node
 	[Export] public int TileType { get; set; } = 0;
 	[Export] public int Seed { get; set; } = 0;
 
-	private WaveCollapseRenderer _renderer;
+	private WaveTileMapRenderer _renderer;
 	private CameraController _camera;
 
 	public override void _Ready()
 	{
 		var parent = GetParent();
-		_renderer = parent?.GetNodeOrNull<WaveCollapseRenderer>("WaveCollapseTileMapRenderer");
+		_renderer = parent?.GetNodeOrNull<WaveTileMapRenderer>("WaveTileMapRenderer");
 		_camera = parent?.GetNodeOrNull<CameraController>("AlgorithmSceneCamera");
 		if (_renderer == null)
 		{

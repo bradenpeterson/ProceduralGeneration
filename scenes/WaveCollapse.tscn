@@ -17,9 +17,9 @@ script = ExtResource("1_j1hau")
 [node name="WaveCollapseController" type="Node" parent="."]
 script = ExtResource("6_a8sl1")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="ContextMenuLayer" type="CanvasLayer" parent="."]
 
-[node name="PopUpMenu" parent="CanvasLayer" instance=ExtResource("2_j1hau")]
+[node name="PopUpMenu" parent="ContextMenuLayer" instance=ExtResource("2_j1hau")]
 scale = Vector2(1.5, 1.5)
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="."]

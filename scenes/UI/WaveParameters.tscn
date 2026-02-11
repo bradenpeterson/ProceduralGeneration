@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bnhishlh2p3b"]
 
-[ext_resource type="Script" path="res://scenes/UI/WaveParameters.cs" id="1_gd1c1"]
+[ext_resource type="Script" uid="uid://dmjrq3ufja8bp" path="res://scripts/UI/WaveParameters.cs" id="1_gd1c1"]
 [ext_resource type="PackedScene" uid="uid://dtvj5kwryqqct" path="res://scenes/UI/HideButton.tscn" id="1_rdllb"]
 [ext_resource type="PackedScene" uid="uid://dwooo3gi1ypeg" path="res://scenes/UI/RegenerateButton.tscn" id="2_gd1c1"]
 
@@ -36,14 +36,14 @@ layout_mode = 2
 min_value = 1.0
 value = 1.0
 
-[node name="HeighBox" type="HBoxContainer" parent="ControlPanel"]
+[node name="HeightBox" type="HBoxContainer" parent="ControlPanel"]
 layout_mode = 2
 
-[node name="HeightLabel" type="Label" parent="ControlPanel/HeighBox"]
+[node name="HeightLabel" type="Label" parent="ControlPanel/HeightBox"]
 layout_mode = 2
 text = "Chunk Width: "
 
-[node name="HeightInput" type="SpinBox" parent="ControlPanel/HeighBox"]
+[node name="HeightInput" type="SpinBox" parent="ControlPanel/HeightBox"]
 layout_mode = 2
 min_value = 1.0
 value = 1.0

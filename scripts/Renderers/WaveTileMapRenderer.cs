@@ -24,20 +24,19 @@ public partial class WaveTileMapRenderer : Node2D
 			_tileMapLayer?.Clear();
 			return;
 		}
-	}
 
-	int w = _grid.GetLength(0);
-	int h = _grid.GetLength(1);
+		int w = _grid.GetLength(0);
+		int h = _grid.GetLength(1);
 
-	_tileMapLayer.Clear();
+		_tileMapLayer.Clear();
 
-	for (int x = 0; x < w; x++)
-	{
-		for (int y = 0; y < h; y++)
+		for (int x = 0; x < w; x++)
 		{
-			_tileMapLayer.SetCell(new Vector2I(x, y), _grid[x, y], TileSet, 0);
+			for (int y = 0; y < h; y++)
+			{
+			}
 		}
-	}
 
-	EmitSignal(SignalName.GridGenerated, w, h, CellSizePx);
+		EmitSignal(SignalName.GridGenerated, w, h, CellSizePx);
+	}
 }

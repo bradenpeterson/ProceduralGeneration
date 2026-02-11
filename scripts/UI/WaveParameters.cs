@@ -15,7 +15,7 @@ public partial class WaveParameters : Control
 		_controller = GetNode<WaveCollapseController>("../../WaveCollapseController");
 		_widthSpinBox = GetNode<SpinBox>("ControlPanel/WidthBox/WidthInput");
 		_heightSpinBox = GetNode<SpinBox>("ControlPanel/HeightBox/HeightInput");
-		_tileTypeOptionButton = GetNode<OptionButton>("ControlPanel/TileTypeBox/TileTypeInput");
+		_tileTypeOptionButton = GetNode<OptionButton>("ControlPanel/WeightBox/WeightInput");
 		_seedLineEdit = GetNode<LineEdit>("ControlPanel/SeedBox/SeedInput");
 		_regenerateButton = GetNode<Button>("ControlPanel/RegenerateButton");
 	

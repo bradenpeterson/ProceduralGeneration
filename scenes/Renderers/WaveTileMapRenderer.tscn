@@ -1,5 +1,8 @@
-[gd_scene format=3 uid="uid://dhe24ek33m7v4"]
+[gd_scene load_steps=2 format=3 uid="uid://dhe24ek33m7v4"]
+
+[ext_resource type="Script" uid="uid://yjejjodoaw50" path="res://scripts/Renderers/WaveTileMapRenderer.cs" id="1_5u3yn"]
 
 [node name="WaveTileMapRenderer" type="Node2D"]
+script = ExtResource("1_5u3yn")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
