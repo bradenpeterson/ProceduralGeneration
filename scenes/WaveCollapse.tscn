@@ -1,0 +1,27 @@
+[gd_scene load_steps=7 format=3 uid="uid://d0b8t64ips6ri"]
+
+[ext_resource type="Script" uid="uid://bnqvnip40t461" path="res://scripts/Controllers/AlgorithmScene.cs" id="1_j1hau"]
+[ext_resource type="PackedScene" uid="uid://d2r5yjdqhlc07" path="res://scenes/AlgorithmSceneCamera.tscn" id="1_t7qq6"]
+[ext_resource type="PackedScene" uid="uid://lq60g7ba16p0" path="res://scenes/UI/PopUpMenu.tscn" id="2_j1hau"]
+[ext_resource type="PackedScene" uid="uid://bnhishlh2p3b" path="res://scenes/UI/WaveParameters.tscn" id="3_a8sl1"]
+[ext_resource type="PackedScene" uid="uid://dhe24ek33m7v4" path="res://scenes/Renderers/WaveTileMapRenderer.tscn" id="4_x3whh"]
+[ext_resource type="Script" uid="uid://dbmx467q7o3fu" path="res://scripts/Controllers/WaveCollapseController.cs" id="6_a8sl1"]
+
+[node name="WaveCollapse" type="Node2D"]
+script = ExtResource("1_j1hau")
+
+[node name="AlgorithmSceneCamera" parent="." instance=ExtResource("1_t7qq6")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PopUpMenu" parent="CanvasLayer" instance=ExtResource("2_j1hau")]
+scale = Vector2(1.5, 1.5)
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+
+[node name="WaveParameters" parent="CanvasLayer2" instance=ExtResource("3_a8sl1")]
+
+[node name="WaveTileMapRenderer" parent="." instance=ExtResource("4_x3whh")]
+
+[node name="WaveCollapseController" type="Node" parent="."]
+script = ExtResource("6_a8sl1")

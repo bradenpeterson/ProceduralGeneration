@@ -1,0 +1,84 @@
+[gd_scene load_steps=4 format=3 uid="uid://bnhishlh2p3b"]
+
+[ext_resource type="Script" path="res://scenes/UI/WaveParameters.cs" id="1_gd1c1"]
+[ext_resource type="PackedScene" uid="uid://dtvj5kwryqqct" path="res://scenes/UI/HideButton.tscn" id="1_rdllb"]
+[ext_resource type="PackedScene" uid="uid://dwooo3gi1ypeg" path="res://scenes/UI/RegenerateButton.tscn" id="2_gd1c1"]
+
+[node name="WaveParameters" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_gd1c1")
+
+[node name="HideButton" parent="." instance=ExtResource("1_rdllb")]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 8.0
+offset_right = 283.0
+offset_bottom = 39.0
+
+[node name="ControlPanel" type="BoxContainer" parent="."]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 46.0
+offset_right = 284.0
+offset_bottom = 182.0
+vertical = true
+
+[node name="WidthBox" type="HBoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="WidthLabel" type="Label" parent="ControlPanel/WidthBox"]
+layout_mode = 2
+text = "Chunk Width: "
+
+[node name="WidthInput" type="SpinBox" parent="ControlPanel/WidthBox"]
+layout_mode = 2
+min_value = 1.0
+value = 1.0
+
+[node name="HeighBox" type="HBoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="HeightLabel" type="Label" parent="ControlPanel/HeighBox"]
+layout_mode = 2
+text = "Chunk Width: "
+
+[node name="HeightInput" type="SpinBox" parent="ControlPanel/HeighBox"]
+layout_mode = 2
+min_value = 1.0
+value = 1.0
+
+[node name="WeightBox" type="HBoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="WeightLabel" type="Label" parent="ControlPanel/WeightBox"]
+layout_mode = 2
+text = "Weight Set"
+
+[node name="WeightInput" type="OptionButton" parent="ControlPanel/WeightBox"]
+layout_mode = 2
+selected = 0
+item_count = 4
+popup/item_0/text = "All Tiles"
+popup/item_0/id = 0
+popup/item_1/text = "No Intersections"
+popup/item_1/id = 1
+popup/item_2/text = "Short Walls"
+popup/item_2/id = 2
+popup/item_3/text = "Prefer Intersections"
+popup/item_3/id = 3
+
+[node name="SeedBox" type="HBoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="SeedLabel" type="Label" parent="ControlPanel/SeedBox"]
+layout_mode = 2
+text = "Seed (0 for random):"
+
+[node name="SeedInput" type="LineEdit" parent="ControlPanel/SeedBox"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="RegenerateButton" parent="ControlPanel" instance=ExtResource("2_gd1c1")]
+layout_mode = 2

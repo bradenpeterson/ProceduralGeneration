@@ -20,6 +20,11 @@ public partial class GameManager : Node
 		ChangeScene(ResourceLoader.Load<PackedScene>("res://scenes/PerlinNoise.tscn"));
 	}
 
+	public void GoToWaveFunctionCollapse()
+	{
+		ChangeScene(ResourceLoader.Load<PackedScene>("res://scenes/WaveCollapse.tscn"));
+	}
+
 	public void ChangeScene(PackedScene scenePath)
 	{
 		GetTree().ChangeSceneToPacked(scenePath);
