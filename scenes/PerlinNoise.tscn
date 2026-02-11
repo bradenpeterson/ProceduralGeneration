@@ -10,18 +10,18 @@
 [node name="PerlinNoise" type="Node2D"]
 script = ExtResource("2_algorithm")
 
-[node name="ContextMenuLayer" type="CanvasLayer" parent="."]
-
-[node name="PopUpMenu" parent="ContextMenuLayer" instance=ExtResource("3_popup")]
-scale = Vector2(1.5, 1.5)
+[node name="AlgorithmSceneCamera" parent="." instance=ExtResource("6_t2w2u")]
 
 [node name="PerlinTileMapRenderer" parent="." instance=ExtResource("4_t2w2u")]
 
 [node name="PerlinController" type="Node" parent="."]
 script = ExtResource("5_tms16")
 
+[node name="ContextMenuLayer" type="CanvasLayer" parent="."]
+
+[node name="PopUpMenu" parent="ContextMenuLayer" instance=ExtResource("3_popup")]
+scale = Vector2(1.5, 1.5)
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="PerlinParameters" parent="CanvasLayer" instance=ExtResource("6_ei472")]
-
-[node name="AlgorithmSceneCamera" parent="." instance=ExtResource("6_t2w2u")]

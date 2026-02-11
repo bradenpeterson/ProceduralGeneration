@@ -10,19 +10,19 @@
 [node name="CellularAutomata" type="Node2D"]
 script = ExtResource("2_algorithm")
 
-[node name="ContextMenuLayer" type="CanvasLayer" parent="."]
-
-[node name="PopUpMenu" parent="ContextMenuLayer" instance=ExtResource("3_popup")]
-scale = Vector2(1.5, 1.5)
+[node name="AlgorithmSceneCamera" parent="." instance=ExtResource("6_6yysf")]
 
 [node name="CellularTileMapRenderer" parent="." instance=ExtResource("4_renderer")]
 
 [node name="CellularAutomataController" type="Node" parent="."]
 script = ExtResource("5_wy1us")
 
+[node name="ContextMenuLayer" type="CanvasLayer" parent="."]
+
+[node name="PopUpMenu" parent="ContextMenuLayer" instance=ExtResource("3_popup")]
+scale = Vector2(1.5, 1.5)
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="CellularParameters" parent="CanvasLayer" instance=ExtResource("6_7d6ap")]
 scale = Vector2(1.2, 1.2)
-
-[node name="AlgorithmSceneCamera" parent="." instance=ExtResource("6_6yysf")]

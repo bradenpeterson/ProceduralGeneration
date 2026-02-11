@@ -30,6 +30,7 @@ public partial class WaveCollapseController : Node
 		Regenerate();
 	}
 
+	/// Generates a new grid using the algorithm and passes it to the renderer.
 	public void Regenerate()
 	{
 		int[,] grid = WaveCollapseGenerator.Generate(Width, Height, TileType, Seed > 0 ? Seed : (int?)null);
