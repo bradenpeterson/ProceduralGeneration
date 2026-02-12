@@ -1,8 +1,53 @@
-[gd_scene load_steps=2 format=3 uid="uid://cypeuuf8gaj3a"]
+[gd_scene load_steps=15 format=3 uid="uid://cypeuuf8gaj3a"]
 
 [ext_resource type="Script" uid="uid://dp547b80btt3a" path="res://scripts/Renderers/PerlinTileMapRenderer.cs" id="1_s5rpg"]
+[ext_resource type="Texture2D" uid="uid://bk3j31v3buhe3" path="res://assets/PerlinNoiseAssets/maptiles.png" id="2_vbkwg"]
+[ext_resource type="Texture2D" uid="uid://dvlrurpe7r6dx" path="res://assets/PerlinNoiseAssets/Water_tileset.png" id="3_00ctt"]
+[ext_resource type="Texture2D" uid="uid://df4e5xdk26bvq" path="res://assets/PerlinNoiseAssets/Sand_tileset.png" id="4_nham5"]
+[ext_resource type="Texture2D" uid="uid://c7y5tb4cvmyn7" path="res://assets/PerlinNoiseAssets/Bush_tileset.png" id="5_ouhyp"]
+[ext_resource type="Texture2D" uid="uid://c26auvwcf51tj" path="res://assets/PerlinNoiseAssets/Stone_tileset.png" id="6_740fr"]
+[ext_resource type="Texture2D" uid="uid://bnqudm2r3hq37" path="res://assets/PerlinNoiseAssets/Snow_tileset.png" id="7_tpd34"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8bdb5"]
+texture = ExtResource("2_vbkwg")
+texture_region_size = Vector2i(32, 32)
+0:3/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bmn3j"]
+texture = ExtResource("3_00ctt")
+texture_region_size = Vector2i(32, 32)
+1:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cmpr0"]
+texture = ExtResource("4_nham5")
+texture_region_size = Vector2i(32, 32)
+1:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_b62ww"]
+texture = ExtResource("5_ouhyp")
+texture_region_size = Vector2i(32, 32)
+1:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_osjdv"]
+texture = ExtResource("6_740fr")
+texture_region_size = Vector2i(32, 32)
+1:2/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lcohi"]
+texture = ExtResource("7_tpd34")
+texture_region_size = Vector2i(32, 32)
+1:2/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_va2cb"]
+sources/4 = SubResource("TileSetAtlasSource_osjdv")
+sources/0 = SubResource("TileSetAtlasSource_8bdb5")
+sources/1 = SubResource("TileSetAtlasSource_bmn3j")
+sources/2 = SubResource("TileSetAtlasSource_cmpr0")
+sources/5 = SubResource("TileSetAtlasSource_lcohi")
+sources/3 = SubResource("TileSetAtlasSource_b62ww")
 
 [node name="PerlinTileMapRenderer" type="Node2D"]
 script = ExtResource("1_s5rpg")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
+tile_set = SubResource("TileSet_va2cb")

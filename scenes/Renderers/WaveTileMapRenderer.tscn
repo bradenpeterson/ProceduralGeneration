@@ -1,8 +1,31 @@
-[gd_scene load_steps=2 format=3 uid="uid://dhe24ek33m7v4"]
+[gd_scene load_steps=4 format=3 uid="uid://dhe24ek33m7v4"]
 
 [ext_resource type="Script" uid="uid://yjejjodoaw50" path="res://scripts/Renderers/WaveTileMapRenderer.cs" id="1_5u3yn"]
+[ext_resource type="FontFile" uid="uid://cxq8q8q54pg1k" path="res://assets/MainMenuAssets/SportypoReguler-OVGwe.ttf" id="2_esorx"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_6h36j"]
+font = ExtResource("2_esorx")
+font_size = 128
 
 [node name="WaveTileMapRenderer" type="Node2D"]
 script = ExtResource("1_5u3yn")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -199.0
+offset_top = 735.0
+offset_right = 1785.0
+offset_bottom = 996.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Under 
+Development"
+label_settings = SubResource("LabelSettings_6h36j")
+horizontal_alignment = 1
+vertical_alignment = 1

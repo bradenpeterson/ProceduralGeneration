@@ -8,6 +8,7 @@ public static class WaveCollapseGenerator
 		int tileType,
 		int? seed = null)
 	{
+        // Check if dimensions are valid
 		if (width <= 0 || height <= 0)
 			return new int[0, 0];
 
@@ -18,7 +19,8 @@ public static class WaveCollapseGenerator
 		{
 			for (int y = 0; y < height; y++)
 			{
-		}
+                // TODO: Implement wave collapse algorithm
+			}
 		}
 		return grid;
 	}
