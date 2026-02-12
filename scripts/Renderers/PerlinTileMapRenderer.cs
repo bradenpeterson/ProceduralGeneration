@@ -65,56 +65,6 @@ public partial class PerlinTileMapRenderer : Node2D
 		}
 		
 		EmitSignal(SignalName.GridGenerated, w, h, CellSizePx);
-
-
-
-
-
-
-
-
-
-
-
-
-
-		// if (_grid != null && _grid.GetLength(0) > 0 && _grid.GetLength(1) > 0)
-		// {
-		// 	EmitSignal(SignalName.GridGenerated, _grid.GetLength(0), _grid.GetLength(1), CellSizePx);
-		// }
-		// QueueRedraw();
 	}
-
-	// public override void _Draw()
-	// {
-	// 	if (_grid == null || _grid.GetLength(0) == 0 || _grid.GetLength(1) == 0)
-	// 		return;
-
-	// 	int w = _grid.GetLength(0);
-	// 	int h = _grid.GetLength(1);
-
-	// 	for (int x = 0; x < w; x++)
-	// 	{
-	// 		for (int y = 0; y < h; y++)
-	// 		{
-	// 			float px = x * CellSizePx;
-	// 			float py = y * CellSizePx;
-	// 			Color c;
-	// 			if (_grid[x, y] < DeepWaterThreshold)
-	// 				c = DeepWaterColor;
-	// 			else if (_grid[x, y] < ShallowWaterThreshold)
-	// 				c = ShallowWaterColor;
-	// 			else if (_grid[x, y] < BeachThreshold)
-	// 				c = BeachColor;
-	// 			else if (_grid[x, y] < GrassThreshold)
-	// 				c = GrassColor;
-	// 			else if (_grid[x, y] < MountainThreshold)
-	// 				c = MountainColor;
-	// 			else
-	// 				c = SnowyPeakColor;
-	// 			DrawRect(new Rect2(px, py, CellSizePx, CellSizePx), c);
-	// 		}
-	// 	}
-	// }
 
 }
