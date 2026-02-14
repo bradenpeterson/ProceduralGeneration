@@ -39,7 +39,7 @@ public partial class WaveTileMapRenderer : Node2D
 			for (int y = 0; y < h; y++)
 			{
 				_grassLayer.SetCell(new Vector2I(x, y), TileSet, new Vector2I(1, 1));
-				_pathLayer.SetCell(new Vector2I(x, y), TileSet, new Vector2I(12, 0));
+				_pathLayer.SetCell(new Vector2I(x, y), TileSet, new Vector2I(12, 0));     // CHANGE TO THE CORRECT TILE ID
 			}
 		}
 
