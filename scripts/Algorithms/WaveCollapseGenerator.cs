@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public static class WaveCollapseGenerator
 {
@@ -17,12 +18,12 @@ public static class WaveCollapseGenerator
 		var rng = seed.HasValue ? new Random(seed.Value) : new Random();
 
 		float[] weights = GetWeights(tileType);
-		var tiles = GetTiles(tileType);
-		var waveFunction = new WaveFunctionCollapse(width, height, tiles, rng);
+		var tiles = GetTiles(weights);
+		var waveFunction = new WaveFunctionState(width, height, tiles, rng);
 
 		if (waveFunction.Collapse())
 		{
-			return waveFunction.GetResult();
+			return waveFunction.GetGrid();
 		}
 		else
 		{
@@ -212,15 +213,16 @@ public static class WaveCollapseGenerator
 			for (int i = 0; i < superpositions.Length; i++)
 			{
 				superpositions[i] = allowedTiles;
-				collapsed[i] = 0;
+				collapsed[i] = -1;
 			}
 
 			// Collapse the wave function
 			while (true)
 			{
 				int cellIndex = FindMinEntropyCell();
-				if (cellIndex == -1) return true; // Successfully collapsed the wave function
-				if (collapsed[cellIndex] != 0) return false; // Cell already collapsed
+				if (cellIndex == -1) return true; // All collapsed
+				if (cellIndex == -2) return false; // Contradiction (entropy 0)
+				if (!CollapseCell(cellIndex)) return false;
 				PropagateCollapse(cellIndex);
 			}
         }
@@ -235,7 +237,7 @@ public static class WaveCollapseGenerator
 				if (collapsed[i] != -1) continue;
 				int entropy = PopCount(superpositions[i]);
 
-				if (entropy < -2) continue; // Contradiction: no tiles compatible with neighbors
+				if (entropy == 0) return -2; // Contradiction: no tiles compatible with neighbors
 				if (entropy < minEntropy) // New minimum entropy
 				{
 					minEntropy = entropy;
@@ -268,22 +270,22 @@ public static class WaveCollapseGenerator
 		}
 
 		// Choose a random tile from the possible tiles based on the weights
-		private int WeightedRandom(List<int> tiles)
+		private int WeightedRandom(List<int> tileIds)
 		{
 			float totalWeight = 0;
-			foreach (int tile in tiles)
-				totalWeight += tiles[tile].Weight;
+			foreach (int tileId in tileIds)
+				totalWeight += tiles[tileId].Weight;
 
 			float randomValue = (float)random.NextDouble() * totalWeight;
 			float cumulativeWeight = 0;
 
-			foreach (int tile in tiles)
+			foreach (int tileId in tileIds)
 			{
-				cumulativeWeight += tiles[tile].Weight;
+				cumulativeWeight += tiles[tileId].Weight;
 				if (randomValue <= cumulativeWeight)
-					return tile;
+					return tileId;
 			}
-			return tiles[tiles.Count - 1];
+			return tileIds[tileIds.Count - 1];
 		}
 
 		// Propogate the collapse to the neighboring cells
@@ -292,7 +294,7 @@ public static class WaveCollapseGenerator
 			Queue<int> queue = new Queue<int>();
 			queue.Enqueue(cellIndex);
 
-			int[,] offsets = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
+			int[,] offsets = { { 0, -1 }, { 1, 0 }, { 0, 1 }, { -1, 0 } };
 
 			while (queue.Count > 0)
 			{
@@ -301,27 +303,25 @@ public static class WaveCollapseGenerator
 				int y = currentCell / width;
 				int tile = collapsed[currentCell];
 
-				for (int i = 0; dir < 4; dir++)
+				for (int dir = 0; dir < 4; dir++)
 				{
 					int nx = x + offsets[dir, 0];
 					int ny = y + offsets[dir, 1];
 					if (nx < 0 || nx >= width || ny < 0 || ny >= height) continue;
 
 					int neighborIndex = ny * width + nx;
-					if (collapsed[neighborIndex] != 0) continue;
-
 					if (collapsed[neighborIndex] != -1) continue;
 
 					ulong oldSuperposition = superpositions[neighborIndex];
 					int oppositeDir = (dir + 2) % 4;
-					ulong compatibleNeighbors = tiles[tile].CompatibleNeighbors[dir];
+					ulong compatibleNeighbors = tiles[tile].CompatibleNeighbors[oppositeDir];
 					ulong newSuperposition = (oldSuperposition & compatibleNeighbors);
 
 					if (newSuperposition != oldSuperposition)
 					{
 						superpositions[neighborIndex] = newSuperposition;
-						if (newSuperposition != 0) 
-							queue.Enqueue(neighborIndex);
+						if (newSuperposition == 0) return; // Contradiction; FindMinEntropyCell will return -2
+						queue.Enqueue(neighborIndex);
 					}
 
 				}		
@@ -333,8 +333,20 @@ public static class WaveCollapseGenerator
 		{
 			int[,] grid = new int[width, height];
 			for (int i = 0; i < width * height; i++)
-				grid[i % width, i / width] = collapsed[i];
+			{
+				if (collapsed[i] >= 0)
+					grid[i % width, i / width] = collapsed[i];
+				else
+					grid[i % width, i / width] = GetSingleTileFromMask(superpositions[i]);
+			}
 			return grid;
+		}
+
+		private static int GetSingleTileFromMask(ulong mask)
+		{
+			for (int t = 0; t < 16; t++)
+				if ((mask & (1UL << t)) != 0) return t;
+			return 0;
 		}
 		
 		// Count the number of set bits in a ulong
