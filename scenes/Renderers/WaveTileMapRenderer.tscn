@@ -269,6 +269,7 @@ texture = ExtResource("2_esorx")
 4:10/0 = 0
 5:10/0 = 0
 6:10/0 = 0
+15:4/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_6h36j"]
 sources/0 = SubResource("TileSetAtlasSource_esorx")
