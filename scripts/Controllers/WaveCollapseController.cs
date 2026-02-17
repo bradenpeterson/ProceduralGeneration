@@ -19,7 +19,7 @@ public partial class WaveCollapseController : Node
 		_camera = parent?.GetNodeOrNull<CameraController>("AlgorithmSceneCamera");
 		if (_renderer == null)
 		{
-			GD.PrintErr("WaveCollapseController: Could not find WaveCollapseTileMapRenderer in scene tree");
+			GD.PrintErr("WaveCollapseController: Could not find WaveTileMapRenderer in scene tree");
 			return;
 		}
 		

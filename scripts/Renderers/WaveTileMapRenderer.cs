@@ -4,7 +4,6 @@ using System;
 public partial class WaveTileMapRenderer : Node2D
 {
 	[Export] public int TileSet { get; set; } = 0;
-	[Export] public int TileId { get; set; } = 0;
 	[Export] public int CellSizePx { get; set; } = 16;
 
 	private TileMapLayer _grassLayer;
@@ -12,25 +11,45 @@ public partial class WaveTileMapRenderer : Node2D
 	private int[,] _grid;
 	[Signal] public delegate void GridGeneratedEventHandler(int width, int height, int cellSize);
 
+	// WFC tile index (0-15) -> atlas coords (source column, source row) for path layer
+	private static readonly Vector2I[] TileIndexToAtlas = new Vector2I[]
+	{
+		new Vector2I(15, 4), // 0 Empty
+		new Vector2I(15, 0), // 1 Top
+		new Vector2I(15, 1), // 2 Right
+		new Vector2I(12, 1), // 3 Top Right
+		new Vector2I(14, 1), // 4 Bottom
+		new Vector2I(12, 2), // 5 Top Bottom
+		new Vector2I(12, 0), // 6 Right Bottom
+		new Vector2I(14, 3), // 7 Top Right Bottom
+		new Vector2I(14, 0), // 8 Left
+		new Vector2I(13, 1), // 9 Top Left
+		new Vector2I(13, 2), // 10 Right Left
+		new Vector2I(14, 2), // 11 Top Right Left
+		new Vector2I(13, 0), // 12 Bottom Left
+		new Vector2I(15, 2), // 13 Top Left Bottom
+		new Vector2I(15, 3), // 14 Right Bottom Left
+		new Vector2I(13, 3), // 15 Top Right Bottom Left
+	};
+
 	public override void _Ready()
 	{
 		_grassLayer = GetNode<TileMapLayer>("GrassLayer");
 		_pathLayer = GetNode<TileMapLayer>("PathLayer");
 	}
 
+	// Renders the WFC output grid: grass under every cell, path layer from tile indices.
 	public void Render(int[,] grid)
 	{
-		_grid = grid;
-		if (_grid == null || grid.GetLength(0) <= 0 || grid.GetLength(1) <= 0)
+		if (grid == null || grid.GetLength(0) <= 0 || grid.GetLength(1) <= 0)
 		{
 			_grassLayer?.Clear();
 			_pathLayer?.Clear();
 			return;
 		}
 
-		int w = _grid.GetLength(0);
-		int h = _grid.GetLength(1);
-
+		int w = grid.GetLength(0);
+		int h = grid.GetLength(1);
 		_grassLayer.Clear();
 		_pathLayer.Clear();
 
@@ -38,62 +57,13 @@ public partial class WaveTileMapRenderer : Node2D
 		{
 			for (int y = 0; y < h; y++)
 			{
-				_grassLayer.SetCell(new Vector2I(x, y), TileSet, new Vector2I(1, 1));
-
-				switch (grid[x, y])
-				{
-					case 0:
-						_pathLayer.SetCell(new Vector2I(x, y), TileSet, new Vector2I(15, 4)); // Empty
-						break;
-					case 1:
-						_pathLayer.SetCell(new Vector2I(x, y), TileSet, new Vector2I(15, 0)); // Top
-						break;
-					case 2:
-						_pathLayer.SetCell(new Vector2I(x, y), TileSet, new Vector2I(15, 1)); // Right
-						break;
-					case 3:
-						_pathLayer.SetCell(new Vector2I(x, y), TileSet, new Vector2I(12, 1)); // Top Right
-						break;
-					case 4:
-						_pathLayer.SetCell(new Vector2I(x, y), TileSet, new Vector2I(14, 1)); // Bottom
-						break;
-					case 5:
-						_pathLayer.SetCell(new Vector2I(x, y), TileSet, new Vector2I(12, 2)); // Top Bottom
-						break;
-					case 6:
-						_pathLayer.SetCell(new Vector2I(x, y), TileSet, new Vector2I(12, 0)); // Right Bottom
-						break;
-					case 7:
-						_pathLayer.SetCell(new Vector2I(x, y), TileSet, new Vector2I(14, 3)); // Top Right Bottom
-						break;
-					case 8:
-						_pathLayer.SetCell(new Vector2I(x, y), TileSet, new Vector2I(14, 0)); // Left
-						break;
-					case 9:
-						_pathLayer.SetCell(new Vector2I(x, y), TileSet, new Vector2I(13, 1)); // Top Left
-						break;
-					case 10:
-						_pathLayer.SetCell(new Vector2I(x, y), TileSet, new Vector2I(12, 1)); // Right Left
-						break;
-					case 11:
-						_pathLayer.SetCell(new Vector2I(x, y), TileSet, new Vector2I(14, 2)); // Top Right Left
-						break;
-					case 12:
-						_pathLayer.SetCell(new Vector2I(x, y), TileSet, new Vector2I(13, 0)); // Bottom Left
-						break;
-					case 13:
-						_pathLayer.SetCell(new Vector2I(x, y), TileSet, new Vector2I(15, 2)); // Top Left Bottom
-						break;
-					case 14:
-						_pathLayer.SetCell(new Vector2I(x, y), TileSet, new Vector2I(15, 3)); // Right Bottom Left
-						break;
-					case 15:
-						_pathLayer.SetCell(new Vector2I(x, y), TileSet, new Vector2I(13, 3)); // Top Right Bottom Left
-						break;
-					default:
-						_pathLayer.SetCell(new Vector2I(x, y), TileSet, new Vector2I(15, 4)); // Empty
-						break;
-				}
+				Vector2I cell = new Vector2I(x, y);
+				_grassLayer.SetCell(cell, TileSet, new Vector2I(1, 1));
+				int tileIndex = grid[x, y];
+				Vector2I atlas = tileIndex >= 0 && tileIndex < TileIndexToAtlas.Length
+					? TileIndexToAtlas[tileIndex]
+					: TileIndexToAtlas[0];
+				_pathLayer.SetCell(cell, TileSet, atlas);
 			}
 		}
 

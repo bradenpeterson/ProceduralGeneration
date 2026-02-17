@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public static class WaveCollapseGenerator
 {
-    private static int tileCount = 16;
+	private const int TileCount = 16;
 	
 	public static int[,] Generate(
 		int width,
@@ -38,9 +38,9 @@ public static class WaveCollapseGenerator
 		return tileType switch
 		{
 			0 => CreateUniformWeights(),
-            1 => CreateCornersOnlyWeights(),
-            2 => CreateVerticalRoadsWeights(),
-            3 => CreateIntersectionWeights(),
+            1 => CreateNoIntersectionsWeights(),
+            2 => CreateShortRoadsWeights(),
+            3 => CreatePreferredIntersectionsWeights(),
             _ => CreateUniformWeights()
 		};
 	}
@@ -48,41 +48,49 @@ public static class WaveCollapseGenerator
 	// Create uniform weights for all tiles
 	private static float[] CreateUniformWeights()
     {
-        float[] weights = new float[tileCount];
-        for (int i = 0; i < tileCount; i++)
-            weights[i] = 1.0f;
+        float[] weights = new float[TileCount];
+        for (int i = 0; i < TileCount; i++)
+            weights[i] = 1.0f; // All tiles are equally likely
         return weights;
     }
 
-	// Create weights for corners only
-	private static float[] CreateCornersOnlyWeights()
+	// Create weights for corners and straight paths only
+	private static float[] CreateNoIntersectionsWeights()
     {
-        float[] weights = new float[tileCount];
+        float[] weights = new float[TileCount];
+		weights[0] = 1.0f; // Empty
         weights[3] = 1.0f; // Top left corner
+		weights[5] = 1.0f; // Top bottom
         weights[6] = 1.0f; // Top right corner
         weights[9] = 1.0f; // Bottom left corner
+		weights[10] = 1.0f; // Right left
 		weights[12] = 1.0f; // Bottom right corner
         return weights;
     }
 
-	// Create weights for vertical roads
-	private static float[] CreateVerticalRoadsWeights()
+	// Create weights for short roads
+	private static float[] CreateShortRoadsWeights()
     {
-        float[] weights = new float[tileCount];
-        weights[5] = 3.0f;  // Vertical road
-        weights[7] = 1.0f;  // T-junction
-        weights[13] = 1.0f;  // T-junction
-        weights[15] = 2.0f; // 4-way
+        float[] weights = new float[TileCount];
+		weights[0] = 1.0f; // Empty
+		weights[1] = 1.0f; // Top
+		weights[2] = 1.0f; // Right
+		weights[4] = 1.0f; // Bottom
+		weights[8] = 1.0f; // Left
         return weights;
     }
 
-	// Create weights for intersections
-	private static float[] CreateIntersectionWeights()
+	// Create weights for preferring intersections
+	private static float[] CreatePreferredIntersectionsWeights()
     {
-        float[] weights = new float[tileCount];
-        weights[15] = 5.0f; // 4-way intersection
-        weights[10] = 1.0f;  // H-road
-        weights[5] = 1.0f;  // V-road
+        float[] weights = new float[TileCount];
+		for (int i = 0; i < TileCount; i++)
+            weights[i] = 1.0f; // All tiles are equally likely
+		weights[7] += 2.0f; // Top right bottom
+		weights[11] += 2.0f; // Top right left
+		weights[13] += 2.0f; // Top left bottom
+		weights[14] += 2.0f; // Right bottom left
+		weights[15] += 2.0f; // Top right bottom left
         return weights;
     }
 
@@ -93,6 +101,7 @@ public static class WaveCollapseGenerator
 		public ulong[] CompatibleNeighbors { get; set; } = new ulong[4];
 	}
 
+	// Directions: 0=North, 1=East, 2=South, 3=West. Tile bits encode which edges are open.
 	private static bool AreCompatible(int tile1, int tile2, int direction)
 	{
 		int[] oppositeDirections = { 2, 3, 0, 1 };
@@ -103,18 +112,18 @@ public static class WaveCollapseGenerator
 
 	private static Tile[] GetTiles(float[] weights)
 	{
-		Tile[] tiles = new Tile[tileCount];
-		for (int i = 0; i < tileCount; i++)
+		Tile[] tiles = new Tile[TileCount];
+		for (int i = 0; i < TileCount; i++)
 		{
 			tiles[i] = new Tile { Id = i, Weight = weights[i] };
 		}
 
-		for (int tileId = 0; tileId < tileCount; tileId++)
+		for (int tileId = 0; tileId < TileCount; tileId++)
 		{
 			for (int direction = 0; direction < 4; direction++)
 			{
 				ulong compatibleNeighbors = 0;
-				for (int otherTileId = 0; otherTileId < tileCount; otherTileId++)
+				for (int otherTileId = 0; otherTileId < TileCount; otherTileId++)
 				{
 					if (AreCompatible(tileId, otherTileId, direction))
 						compatibleNeighbors |= 1UL << otherTileId;
@@ -234,7 +243,7 @@ public static class WaveCollapseGenerator
 			return tileIds[tileIds.Count - 1];
 		}
 
-		// Propogate the collapse to the neighboring cells
+		// Propagate constraints from a collapsed cell to neighbors; returns false on contradiction.
 		public bool PropagateCollapse(int cellIndex)
 		{
 			Queue<int> queue = new Queue<int>();
@@ -277,21 +286,22 @@ public static class WaveCollapseGenerator
 			return true;
 		}
 	
-		// Get the grid of the collapsed wave function
+		// Builds the final grid; cells constrained to one tile but not collapsed use superposition.
 		public int[,] GetGrid()
 		{
 			int[,] grid = new int[width, height];
 			for (int i = 0; i < collapsed.Length; i++)
 			{
-				if (collapsed[i] >= 0)
-					grid[i % width, i / width] = collapsed[i];
+				grid[i % width, i / width] = collapsed[i] >= 0
+					? collapsed[i]
+					: GetSingleTileFromMask(superpositions[i]);
 			}
 			return grid;
 		}
 
-		public static int GetSingleTileFromMask(ulong mask)
+		private static int GetSingleTileFromMask(ulong mask)
 		{
-			for (int t = 0; t < 16; t++)
+			for (int t = 0; t < TileCount; t++)
 				if ((mask & (1UL << t)) != 0) return t;
 			return 0;
 		}

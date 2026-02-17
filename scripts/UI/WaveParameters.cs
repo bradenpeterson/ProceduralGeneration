@@ -45,5 +45,4 @@ public partial class WaveParameters : Control
 
 		_controller.Regenerate();
 	}
-
 }
