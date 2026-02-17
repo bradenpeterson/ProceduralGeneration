@@ -41,7 +41,7 @@ layout_mode = 2
 
 [node name="HeightLabel" type="Label" parent="ControlPanel/HeightBox"]
 layout_mode = 2
-text = "Chunk Width: "
+text = "Chunk Height: "
 
 [node name="HeightInput" type="SpinBox" parent="ControlPanel/HeightBox"]
 layout_mode = 2
