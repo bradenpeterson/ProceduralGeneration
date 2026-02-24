@@ -1,0 +1,124 @@
+[gd_scene load_steps=4 format=3 uid="uid://d3rpwtqhlsd5v"]
+
+[ext_resource type="Script" uid="uid://txhgvlg7sisr" path="res://scripts/UI/RandomWalkParameters.cs" id="1_a14l5"]
+[ext_resource type="PackedScene" uid="uid://dtvj5kwryqqct" path="res://scenes/UI/HideButton.tscn" id="1_taja5"]
+[ext_resource type="PackedScene" uid="uid://dwooo3gi1ypeg" path="res://scenes/UI/RegenerateButton.tscn" id="2_a14l5"]
+
+[node name="RandomWalkParameters" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_a14l5")
+
+[node name="HideButton" parent="." instance=ExtResource("1_taja5")]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 8.0
+offset_right = 275.0
+offset_bottom = 39.0
+
+[node name="ControlPanel" type="BoxContainer" parent="."]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 46.0
+offset_right = 276.0
+offset_bottom = 336.0
+vertical = true
+
+[node name="MinStepsBox" type="HBoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="MinStepsLabel" type="Label" parent="ControlPanel/MinStepsBox"]
+layout_mode = 2
+text = "Min Steps: "
+
+[node name="MinStepsInput" type="SpinBox" parent="ControlPanel/MinStepsBox"]
+layout_mode = 2
+min_value = 1.0
+max_value = 1000.0
+value = 1.0
+
+[node name="MaxStepsBox" type="HBoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="MaxStepsLabel" type="Label" parent="ControlPanel/MaxStepsBox"]
+layout_mode = 2
+text = "Max Steps: "
+
+[node name="MaxStepsInput" type="SpinBox" parent="ControlPanel/MaxStepsBox"]
+layout_mode = 2
+min_value = 1.0
+max_value = 1000.0
+value = 1.0
+
+[node name="StepChanceBox" type="HBoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="StepChanceLabel" type="Label" parent="ControlPanel/StepChanceBox"]
+layout_mode = 2
+text = "Step Chance: "
+
+[node name="StepChanceInput" type="SpinBox" parent="ControlPanel/StepChanceBox"]
+layout_mode = 2
+min_value = 0.01
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="AllowLoopsBox" type="HBoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="AllowLoopsLabel" type="Label" parent="ControlPanel/AllowLoopsBox"]
+layout_mode = 2
+text = "Allow Loops: "
+
+[node name="AllowLoopsInput" type="CheckButton" parent="ControlPanel/AllowLoopsBox"]
+layout_mode = 2
+
+[node name="AllowBranchesBox" type="HBoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="AllowBranchesLabel" type="Label" parent="ControlPanel/AllowBranchesBox"]
+layout_mode = 2
+text = "Allow Branches: "
+
+[node name="AllowBranchesInput" type="CheckButton" parent="ControlPanel/AllowBranchesBox"]
+layout_mode = 2
+
+[node name="AllowConnectionsBox" type="HBoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="AllowConnectionsLabel" type="Label" parent="ControlPanel/AllowConnectionsBox"]
+layout_mode = 2
+text = "Allow Branches to Connect: "
+
+[node name="AllowConnectionsInput" type="CheckButton" parent="ControlPanel/AllowConnectionsBox"]
+layout_mode = 2
+
+[node name="BranchChanceBox" type="HBoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="BranchChanceLabel" type="Label" parent="ControlPanel/BranchChanceBox"]
+layout_mode = 2
+text = "Branch Chance: "
+
+[node name="BranchChanceInput" type="SpinBox" parent="ControlPanel/BranchChanceBox"]
+layout_mode = 2
+min_value = 0.01
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="SeedBox" type="HBoxContainer" parent="ControlPanel"]
+layout_mode = 2
+
+[node name="SeedLabel" type="Label" parent="ControlPanel/SeedBox"]
+layout_mode = 2
+text = "Seed (0 for random):"
+
+[node name="SeedInput" type="LineEdit" parent="ControlPanel/SeedBox"]
+layout_mode = 2
+text = "0"
+placeholder_text = "0"
+
+[node name="RegenerateButton" parent="ControlPanel" instance=ExtResource("2_a14l5")]
+layout_mode = 2

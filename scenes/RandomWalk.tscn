@@ -1,0 +1,27 @@
+[gd_scene load_steps=7 format=3 uid="uid://cmwdwkx2qcvqn"]
+
+[ext_resource type="Script" uid="uid://bnqvnip40t461" path="res://scripts/Controllers/AlgorithmScene.cs" id="1_gm65n"]
+[ext_resource type="PackedScene" uid="uid://d2r5yjdqhlc07" path="res://scenes/AlgorithmSceneCamera.tscn" id="2_va63x"]
+[ext_resource type="PackedScene" uid="uid://bnsourel0rhjp" path="res://scenes/Renderers/RandomWalkRenderer.tscn" id="3_emesl"]
+[ext_resource type="Script" uid="uid://ww3kunto4lm2" path="res://scripts/Controllers/RandomWalkController.cs" id="4_6at8c"]
+[ext_resource type="PackedScene" uid="uid://lq60g7ba16p0" path="res://scenes/UI/PopUpMenu.tscn" id="5_ohf67"]
+[ext_resource type="PackedScene" uid="uid://d3rpwtqhlsd5v" path="res://scenes/UI/RandomWalkParameters.tscn" id="6_wo117"]
+
+[node name="RandomWalk" type="Node2D"]
+script = ExtResource("1_gm65n")
+
+[node name="AlgorithmSceneCamera" parent="." instance=ExtResource("2_va63x")]
+
+[node name="RandomWalkRenderer" parent="." instance=ExtResource("3_emesl")]
+
+[node name="RandomWalkController" type="Node" parent="."]
+script = ExtResource("4_6at8c")
+
+[node name="ContextMenuLayer" type="CanvasLayer" parent="."]
+
+[node name="PopUpMenu" parent="ContextMenuLayer" instance=ExtResource("5_ohf67")]
+scale = Vector2(1.5, 1.5)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="RandomWalkParameters" parent="CanvasLayer" instance=ExtResource("6_wo117")]
