@@ -68,7 +68,8 @@ public static class BinaryGenerator
         var rooms = new List<RectInt>();
         var corridors = new List<RectInt>();
 
-        // Room/corridor placement will be added later.
+        PlaceRooms(root, rooms, rng);
+        ConnectRooms(root, corridors, rng);
 
         return new BspResult
         {
@@ -218,5 +219,142 @@ public static class BinaryGenerator
         }
 
         return node;
+    }
+
+    /// Places a room in every leaf region such that the room always contains the region center.
+    private static void PlaceRooms(Node node, List<RectInt> rooms, Random rng)
+    {
+        if (node == null)
+            return;
+
+        if (node.IsLeaf)
+        {
+            // Region center in tile coordinates
+            int cx = node.X + node.Width / 2;
+            int cy = node.Y + node.Height / 2;
+
+            // Maximum extents we can grow from the center without leaving the region
+            int maxLeft  = cx - node.X;
+            int maxRight = node.X + node.Width  - 1 - cx;
+            int maxUp    = cy - node.Y;
+            int maxDown  = node.Y + node.Height - 1 - cy;
+
+            // Randomly choose how far the room extends in each direction
+            int left  = rng.Next(0, maxLeft  + 1);
+            int right = rng.Next(0, maxRight + 1);
+            int up    = rng.Next(0, maxUp    + 1);
+            int down  = rng.Next(0, maxDown  + 1);
+
+            int roomX = cx - left;
+            int roomY = cy - up;
+            int roomWidth  = left + right + 1;
+            int roomHeight = up + down + 1;
+
+            node.RoomX = roomX;
+            node.RoomY = roomY;
+            node.RoomWidth = roomWidth;
+            node.RoomHeight = roomHeight;
+
+            rooms.Add(new RectInt(roomX, roomY, roomWidth, roomHeight));
+        }
+        else
+        {
+            PlaceRooms(node.Left, rooms, rng);
+            PlaceRooms(node.Right, rooms, rng);
+        }
+    }
+
+    /// Places corridors in the binary space partitioning tree.
+    private static void ConnectRooms(Node node, List<RectInt> corridors, Random rng)
+    {
+        if (node == null || node.IsLeaf) 
+        {
+            return;
+        }
+
+        ConnectRooms(node.Left, corridors, rng);
+        ConnectRooms(node.Right, corridors, rng);
+
+        var leftCenter = GetSubtreeRoomCenter(node.Left, rng);
+        var rightCenter = GetSubtreeRoomCenter(node.Right, rng);
+        AddCorridor(leftCenter, rightCenter, corridors, rng);
+    }
+
+    // Helper function to get the center of a room in a subtree.
+    private static (int x, int y) GetSubtreeRoomCenter(Node node, Random rng)
+    {
+        if (node == null)
+            return (0, 0);
+
+        if (node.HasRoom)
+        {
+            return (node.RoomX + node.RoomWidth / 2, node.RoomY + node.RoomHeight / 2);
+        }
+
+        // Collect room centers from leaves in this subtree and pick one at random
+        var centers = new List<(int x, int y)>();
+        CollectLeafRoomCenters(node, centers);
+        if (centers.Count > 0)
+            return centers[rng.Next(centers.Count)];
+
+        // Fallback: region center if no rooms found (shouldn't happen with current PlaceRooms)
+        int cx = node.X + node.Width / 2;
+        int cy = node.Y + node.Height / 2;
+        return (cx, cy);
+    }
+
+    private static void CollectLeafRoomCenters(Node node, List<(int x, int y)> centers)
+    {
+        if (node == null)
+            return;
+
+        if (node.IsLeaf)
+        {
+            if (node.HasRoom)
+            {
+                int cx = node.RoomX + node.RoomWidth / 2;
+                int cy = node.RoomY + node.RoomHeight / 2;
+                centers.Add((cx, cy));
+            }
+            return;
+        }
+
+        CollectLeafRoomCenters(node.Left, centers);
+        CollectLeafRoomCenters(node.Right, centers);
+    }
+
+    private static void AddCorridor((int x, int y) from, (int x, int y) to, List<RectInt> corridors, Random rng)
+    {
+        int x1 = from.x;
+        int y1 = from.y;
+        int x2 = to.x;
+        int y2 = to.y;
+
+        bool horizontalFirst = rng.Next(2) == 0;
+
+        if (horizontalFirst)
+        {
+            int xMin = Math.Min(x1, x2);
+            int xMax = Math.Max(x1, x2);
+            int lengthH = xMax - xMin + 1;
+            corridors.Add(new RectInt(xMin, y1, lengthH, 1));
+
+            int yMin = Math.Min(y1, y2);
+            int yMax = Math.Max(y1, y2);
+            int lengthV = yMax - yMin + 1;
+            corridors.Add(new RectInt(x2, yMin, 1, lengthV));
+        }
+        else
+        {
+            int yMin = Math.Min(y1, y2);
+            int yMax = Math.Max(y1, y2);
+            int lengthV = yMax - yMin + 1;
+            corridors.Add(new RectInt(x1, yMin, 1, lengthV));
+
+            int xMin = Math.Min(x1, x2);
+            int xMax = Math.Max(x1, x2);
+            int lengthH = xMax - xMin + 1;
+            corridors.Add(new RectInt(xMin, y2, lengthH, 1));
+        }
     }
 }
