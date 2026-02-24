@@ -9,18 +9,13 @@ public partial class BinaryRenderer : Node2D
 	
 	private List<Rect2I> _roomRects;
 	private List<Rect2I> _corridorRects;
-	private int _width;
-	private int _height;
 
 	[Signal] public delegate void GridGeneratedEventHandler(int width, int height, int cellSize);
 
-	public void Render(BspResult result)
+	public void Render(BspResult result, int width, int height)
 	{
 		_roomRects = new List<Rect2I>();
 		_corridorRects = new List<Rect2I>();
-
-		_width = result.Width;
-		_height = result.Height;
 
 		if (result.Rooms != null)
 		{
@@ -34,7 +29,7 @@ public partial class BinaryRenderer : Node2D
 				_corridorRects.Add(new Rect2I(c.X, c.Y, c.Width, c.Height));
 		}
 
-		EmitSignal(SignalName.GridGenerated, _width, _height, CellSizePx);
+		EmitSignal(SignalName.GridGenerated, width, height, CellSizePx);
 		QueueRedraw();
 	}
 

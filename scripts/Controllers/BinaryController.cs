@@ -4,10 +4,10 @@ using System;
 public partial class BinaryController : Node
 {
 	[ExportGroup("Generation Parameters")]
-	[Export] public int Width { get; set; } = 1000;
-	[Export] public int Height { get; set; } = 1000;
-	[Export] public int MinDepth { get; set; } = 10;
-	[Export] public int MaxDepth { get; set; } = 15;
+	[Export] public int Width { get; set; } = 500;
+	[Export] public int Height { get; set; } = 500;
+	[Export] public int MinDepth { get; set; } = 8;
+	[Export] public int MaxDepth { get; set; } = 10;
 	[Export] public int MinRegionSize { get; set; } = 8;
 	[Export] public float SplitChance { get; set; } = 0.8f;
 	[Export] public int Seed { get; set; } = 0;
@@ -19,7 +19,7 @@ public partial class BinaryController : Node
 	{
 		var parent = GetParent();
 		_renderer = parent?.GetNodeOrNull<BinaryRenderer>("BinaryRenderer");
-		_camera = parent?.GetNodeOrNull<CameraController>("CameraController");
+		_camera = parent?.GetNodeOrNull<CameraController>("AlgorithmSceneCamera");
 	
 		if (_renderer == null)
 		{
@@ -44,6 +44,6 @@ public partial class BinaryController : Node
 			SplitChance,
 			Seed > 0 ? Seed : (int?)null);
 
-		_renderer.Render(result);
+		_renderer.Render(result, Width, Height);
 	}
 }
