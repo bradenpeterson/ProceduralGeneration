@@ -4,12 +4,12 @@ using System;
 public partial class BinaryController : Node
 {
 	[ExportGroup("Generation Parameters")]
-	[Export] public int Width { get; set; } = 100;
-	[Export] public int Height { get; set; } = 100;
-	[Export] public int MinDepth { get; set; } = 1;
-	[Export] public int MaxDepth { get; set; } = 10;
+	[Export] public int Width { get; set; } = 1000;
+	[Export] public int Height { get; set; } = 1000;
+	[Export] public int MinDepth { get; set; } = 10;
+	[Export] public int MaxDepth { get; set; } = 15;
 	[Export] public int MinRegionSize { get; set; } = 8;
-	[Export] public float SplitChance { get; set; } = 0.5f;
+	[Export] public float SplitChance { get; set; } = 0.8f;
 	[Export] public int Seed { get; set; } = 0;
 
 	private BinaryRenderer _renderer;

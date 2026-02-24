@@ -32,6 +32,7 @@ text = "Width: "
 [node name="WidthInput" type="SpinBox" parent="ControlPanel/WidthBox"]
 layout_mode = 2
 min_value = 1.0
+max_value = 1000.0
 value = 1.0
 
 [node name="HeightBox" type="HBoxContainer" parent="ControlPanel"]
@@ -44,6 +45,7 @@ text = "Height: "
 [node name="HeightInput" type="SpinBox" parent="ControlPanel/HeightBox"]
 layout_mode = 2
 min_value = 1.0
+max_value = 1000.0
 value = 1.0
 
 [node name="MinDepthBox" type="HBoxContainer" parent="ControlPanel"]
