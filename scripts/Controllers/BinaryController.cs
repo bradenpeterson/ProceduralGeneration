@@ -11,13 +11,13 @@ public partial class BinaryController : Node
 	[Export] public float SplitChance { get; set; } = 0.5f;
 	[Export] public int Seed { get; set; } = 0;
 
-	private BinarySpacePartitioningRenderer _renderer;
+	private BinaryRenderer _renderer;
 	private CameraController _camera;
 
 	public override void _Ready()
 	{
 		var parent = GetParent();
-		_renderer = parent?.GetNodeOrNull<BinarySpacePartitioningRenderer>("BinarySpacePartitioningRenderer");
+		_renderer = parent?.GetNodeOrNull<BinaryRenderer>("BinaryRenderer");
 		_camera = parent?.GetNodeOrNull<CameraController>("CameraController");
 	
 		if (_renderer == null)

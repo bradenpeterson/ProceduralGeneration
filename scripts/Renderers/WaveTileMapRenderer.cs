@@ -8,7 +8,6 @@ public partial class WaveTileMapRenderer : Node2D
 
 	private TileMapLayer _grassLayer;
 	private TileMapLayer _pathLayer;
-	private int[,] _grid;
 	[Signal] public delegate void GridGeneratedEventHandler(int width, int height, int cellSize);
 
 	// WFC tile index (0-15) -> atlas coords (source column, source row) for path layer

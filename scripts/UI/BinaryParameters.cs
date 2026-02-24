@@ -3,7 +3,7 @@ using System;
 
 public partial class BinaryParameters : Control
 {
-	private BinarySpacePartitioningController _controller;
+	private BinaryController _controller;
 	private SpinBox _widthSpinBox;
 	private SpinBox _heightSpinBox;
 	private SpinBox _minDepthSpinBox;
@@ -14,7 +14,7 @@ public partial class BinaryParameters : Control
 
 	public override void _Ready()
 	{
-		_controller = GetNode<BinarySpacePartitioningController>("../../BinarySpacePartitioningController");
+		_controller = GetNode<BinaryController>("../../BinaryController");
 		_widthSpinBox = GetNode<SpinBox>("ControlPanel/WidthBox/WidthInput");
 		_heightSpinBox = GetNode<SpinBox>("ControlPanel/HeightBox/HeightInput");
 		_minDepthSpinBox = GetNode<SpinBox>("ControlPanel/MinDepthBox/MinDepthInput");
