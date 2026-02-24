@@ -5,10 +5,14 @@ using System.Collections.Generic;
 public partial class BinaryRenderer : Node2D
 {
 	[Export] public int CellSizePx { get; set; } = 16;
-	[Export] public Color TileColor { get; set; } = new Color(0.6f, 0.6f, 0.6f);
+	[Export] public Color BackgroundColor { get; set; } = new Color("0D0D0D");
+	[Export] public Color RoomColor { get; set; } = new Color("C2B280");
+	[Export] public Color CorridorColor { get; set; } = new Color("7A6E5A");
 	
 	private List<Rect2I> _roomRects;
 	private List<Rect2I> _corridorRects;
+	private int _width;
+	private int _height;
 
 	[Signal] public delegate void GridGeneratedEventHandler(int width, int height, int cellSize);
 
@@ -16,6 +20,9 @@ public partial class BinaryRenderer : Node2D
 	{
 		_roomRects = new List<Rect2I>();
 		_corridorRects = new List<Rect2I>();
+
+		_width = width;
+		_height = height;
 
 		if (result.Rooms != null)
 		{
@@ -29,7 +36,7 @@ public partial class BinaryRenderer : Node2D
 				_corridorRects.Add(new Rect2I(c.X, c.Y, c.Width, c.Height));
 		}
 
-		EmitSignal(SignalName.GridGenerated, width, height, CellSizePx);
+		EmitSignal(SignalName.GridGenerated, _width, _height, CellSizePx);
 		QueueRedraw();
 	}
 
@@ -39,25 +46,32 @@ public partial class BinaryRenderer : Node2D
 		if (_roomRects == null && _corridorRects == null)
 			return;
 
-		// Draw rooms
-		if (_roomRects != null)
+		// Draw background covering the logical BSP area
+		if (_width > 0 && _height > 0)
 		{
-			foreach (var r in _roomRects)
-			{
-				var pos = new Vector2(r.Position.X * CellSizePx, r.Position.Y * CellSizePx);
-				var size = new Vector2(r.Size.X * CellSizePx, r.Size.Y * CellSizePx);
-				DrawRect(new Rect2(pos, size), TileColor, filled: true);
-			}
+			var size = new Vector2(_width * CellSizePx, _height * CellSizePx);
+			DrawRect(new Rect2(Vector2.Zero, size), BackgroundColor, filled: true);
 		}
 
-		// Draw corridors
+		// Draw corridors first
 		if (_corridorRects != null)
 		{
 			foreach (var c in _corridorRects)
 			{
 				var pos = new Vector2(c.Position.X * CellSizePx, c.Position.Y * CellSizePx);
 				var size = new Vector2(c.Size.X * CellSizePx, c.Size.Y * CellSizePx);
-				DrawRect(new Rect2(pos, size), TileColor, filled: true);
+				DrawRect(new Rect2(pos, size), CorridorColor, filled: true);
+			}
+		}
+
+		// Draw rooms on top
+		if (_roomRects != null)
+		{
+			foreach (var r in _roomRects)
+			{
+				var pos = new Vector2(r.Position.X * CellSizePx, r.Position.Y * CellSizePx);
+				var size = new Vector2(r.Size.X * CellSizePx, r.Size.Y * CellSizePx);
+				DrawRect(new Rect2(pos, size), RoomColor, filled: true);
 			}
 		}
 	}

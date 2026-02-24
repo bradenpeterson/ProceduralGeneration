@@ -233,17 +233,58 @@ public static class BinaryGenerator
             int cx = node.X + node.Width / 2;
             int cy = node.Y + node.Height / 2;
 
-            // Maximum symmetric radius we can grow from the center on each axis
-            int maxHorizRadius = Math.Min(cx - node.X, node.X + node.Width - 1 - cx);
-            int maxVertRadius  = Math.Min(cy - node.Y, node.Y + node.Height - 1 - cy);
+            // Maximum extents we can grow from the center without leaving the region
+            int maxLeft  = cx - node.X;
+            int maxRight = node.X + node.Width  - 1 - cx;
+            int maxUp    = cy - node.Y;
+            int maxDown  = node.Y + node.Height - 1 - cy;
 
-            int horizRadius = rng.Next(0, maxHorizRadius + 1);
-            int vertRadius  = rng.Next(0, maxVertRadius  + 1);
+            // Randomly choose how far the room extends in each direction
+            int left  = rng.Next(0, maxLeft  + 1);
+            int right = rng.Next(0, maxRight + 1);
+            int up    = rng.Next(0, maxUp    + 1);
+            int down  = rng.Next(0, maxDown  + 1);
 
-            int roomX = cx - horizRadius;
-            int roomY = cy - vertRadius;
-            int roomWidth  = 2 * horizRadius + 1;
-            int roomHeight = 2 * vertRadius  + 1;
+            // Ensure we don't end up with a 1-tile-thick room in either dimension,
+            // as those visually match corridor thickness.
+            if (left + right == 0 && maxLeft + maxRight > 0)
+            {
+                // We have room to widen horizontally; bump one side by 1 if possible.
+                if (maxLeft > 0 && maxRight > 0)
+                {
+                    if (rng.Next(2) == 0) left = 1; else right = 1;
+                }
+                else if (maxLeft > 0)
+                {
+                    left = 1;
+                }
+                else if (maxRight > 0)
+                {
+                    right = 1;
+                }
+            }
+
+            if (up + down == 0 && maxUp + maxDown > 0)
+            {
+                // We have room to thicken vertically; bump one side by 1 if possible.
+                if (maxUp > 0 && maxDown > 0)
+                {
+                    if (rng.Next(2) == 0) up = 1; else down = 1;
+                }
+                else if (maxUp > 0)
+                {
+                    up = 1;
+                }
+                else if (maxDown > 0)
+                {
+                    down = 1;
+                }
+            }
+
+            int roomX = cx - left;
+            int roomY = cy - up;
+            int roomWidth  = left + right + 1;
+            int roomHeight = up + down + 1;
 
             node.RoomX = roomX;
             node.RoomY = roomY;
