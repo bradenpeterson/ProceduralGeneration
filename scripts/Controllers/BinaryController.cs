@@ -8,6 +8,7 @@ public partial class BinaryController : Node
 	[Export] public int Height { get; set; } = 100;
 	[Export] public int MinDepth { get; set; } = 1;
 	[Export] public int MaxDepth { get; set; } = 10;
+	[Export] public int MinRegionSize { get; set; } = 8;
 	[Export] public float SplitChance { get; set; } = 0.5f;
 	[Export] public int Seed { get; set; } = 0;
 
@@ -34,9 +35,15 @@ public partial class BinaryController : Node
 	
 	public void Regenerate()
 	{
-		int[,] grid = BinarySpacePartitioningGenerator.Generate(Width, Height, MinDepth, MaxDepth, SplitChance, Seed > 0 ? Seed : (int?)null);
-		_renderer.Render(grid);
+		BspResult result = BinaryGenerator.Generate(
+			Width,
+			Height,
+			MinDepth,
+			MaxDepth,
+			MinRegionSize,
+			SplitChance,
+			Seed > 0 ? Seed : (int?)null);
+
+		_renderer.Render(result);
 	}
-	
-	
 }
