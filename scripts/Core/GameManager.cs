@@ -25,6 +25,16 @@ public partial class GameManager : Node
 		ChangeScene(ResourceLoader.Load<PackedScene>("res://scenes/WaveCollapse.tscn"));
 	}
 
+	public void GoToBinarySpacePartitioning()
+	{
+		ChangeScene(ResourceLoader.Load<PackedScene>("res://scenes/BinarySpacePartitioning.tscn"));
+	}
+
+	public void GoToRandomWalk()
+	{
+		ChangeScene(ResourceLoader.Load<PackedScene>("res://scenes/RandomWalk.tscn"));
+	}
+
 	public void ChangeScene(PackedScene scenePath)
 	{
 		GetTree().ChangeSceneToPacked(scenePath);

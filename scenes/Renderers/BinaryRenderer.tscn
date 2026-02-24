@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://d3wmbrabx7tmg"]
+
+[node name="BinaryRenderer" type="Node2D"]

@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://bo2qmpw44c0db"]
+
+[ext_resource type="PackedScene" uid="uid://d2r5yjdqhlc07" path="res://scenes/AlgorithmSceneCamera.tscn" id="1_bfiuf"]
+[ext_resource type="PackedScene" uid="uid://d3wmbrabx7tmg" path="res://scenes/Renderers/BinaryRenderer.tscn" id="2_58kdf"]
+[ext_resource type="PackedScene" uid="uid://lq60g7ba16p0" path="res://scenes/UI/PopUpMenu.tscn" id="3_owol6"]
+[ext_resource type="PackedScene" uid="uid://cmgsj6otr24tx" path="res://scenes/UI/BinaryParameters.tscn" id="4_g3bnx"]
+
+[node name="BinarySpacePartitioning" type="Node2D"]
+
+[node name="AlgorithmSceneCamera" parent="." instance=ExtResource("1_bfiuf")]
+
+[node name="BinaryRenderer" parent="." instance=ExtResource("2_58kdf")]
+
+[node name="BinaryController" type="Node" parent="."]
+
+[node name="ContextMenuLayer" type="CanvasLayer" parent="."]
+
+[node name="PopUpMenu" parent="ContextMenuLayer" instance=ExtResource("3_owol6")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="BinaryParameters" parent="CanvasLayer" instance=ExtResource("4_g3bnx")]
