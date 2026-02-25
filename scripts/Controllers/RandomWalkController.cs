@@ -6,11 +6,11 @@ public partial class RandomWalkController : Node
 	[ExportGroup("Generation Parameters")]
 	[Export] public int MinSteps { get; set; } = 100;
 	[Export] public int MaxSteps { get; set; } = 100;
-	[Export] public int StepChance { get; set; } = .5f;
+	[Export] public float StepChance { get; set; } = 0.5f;
 	[Export] public bool AllowLoops { get; set; } = true;
-	[Export] public bool AllowBranching { get; set; } = true;
-	[Export] public bool AllowConnectingBranches { get; set; } = true;
-	[Export] public int BranchingChance { get; set; } = 0.5f;
+	[Export] public bool AllowBranches { get; set; } = true;
+	[Export] public bool AllowConnections { get; set; } = true;
+	[Export] public float BranchChance { get; set; } = 0.5f;
 	[Export] public int Seed { get; set; } = 0;
 
 	private RandomWalkRenderer _renderer;
@@ -36,8 +36,8 @@ public partial class RandomWalkController : Node
 	public void Regenerate()
 	{
 		var grid = RandomWalkGenerator.Generate(
-			MinSteps, MaxSteps, StepChance, AllowLoops, AllowBranching, 
-			AllowConnectingBranches, BranchingChance, Seed > 0 ? Seed : (int?)null);
+			MinSteps, MaxSteps, StepChance, AllowLoops, AllowBranches, 
+			AllowConnections, BranchChance, Seed > 0 ? Seed : (int?)null);
 		_renderer.Render(grid);
 	}
 }

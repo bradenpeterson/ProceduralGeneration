@@ -8,10 +8,11 @@ public partial class RandomWalkParameters : Control
 	private SpinBox _maxStepsSpinBox;
 	private SpinBox _stepChanceSpinBox;
 	private CheckButton _allowLoopsCheckBox;
-	private CheckButton _allowBranchingCheckBox;
-	private CheckButton _allowConnectingBranchesCheckBox;
-	private SpinBox _branchingChanceSpinBox;
+	private CheckButton _allowBranchesCheckBox;
+	private CheckButton _allowConnectionsCheckBox;
+	private SpinBox _branchChanceSpinBox;
 	private LineEdit _seedLineEdit;
+	private Button _regenerateButton;
 
 	public override void _Ready()
 	{
@@ -20,19 +21,19 @@ public partial class RandomWalkParameters : Control
 		_maxStepsSpinBox = GetNode<SpinBox>("ControlPanel/MaxStepsBox/MaxStepsInput");
 		_stepChanceSpinBox = GetNode<SpinBox>("ControlPanel/StepChanceBox/StepChanceInput");
 		_allowLoopsCheckBox = GetNode<CheckButton>("ControlPanel/AllowLoopsBox/AllowLoopsInput");
-		_allowBranchingCheckBox = GetNode<CheckButton>("ControlPanel/AllowBranchingBox/AllowBranchingInput");
-		_allowConnectingBranchesCheckBox = GetNode<CheckButton>("ControlPanel/AllowConnectingBranchesBox/AllowConnectingBranchesInput");
-		_branchingChanceSpinBox = GetNode<SpinBox>("ControlPanel/BranchingChanceBox/BranchingChanceInput");
+		_allowBranchesCheckBox = GetNode<CheckButton>("ControlPanel/AllowBranchesBox/AllowBranchesInput");
+		_allowConnectionsCheckBox = GetNode<CheckButton>("ControlPanel/AllowConnectionsBox/AllowConnectionsInput");
+		_branchChanceSpinBox = GetNode<SpinBox>("ControlPanel/BranchChanceBox/BranchChanceInput");
 		_seedLineEdit = GetNode<LineEdit>("ControlPanel/SeedBox/SeedInput");
 		_regenerateButton = GetNode<Button>("ControlPanel/RegenerateButton");
 
 		_minStepsSpinBox.Value = _controller.MinSteps;
 		_maxStepsSpinBox.Value = _controller.MaxSteps;
 		_stepChanceSpinBox.Value = _controller.StepChance;
-		_allowLoopsCheckBox.Pressed = _controller.AllowLoops;
-		_allowBranchingCheckBox.Pressed = _controller.AllowBranching;
-		_allowConnectingBranchesCheckBox.Pressed = _controller.AllowConnectingBranches;
-		_branchingChanceSpinBox.Value = _controller.BranchingChance;
+		_allowLoopsCheckBox.ButtonPressed = _controller.AllowLoops;
+		_allowBranchesCheckBox.ButtonPressed = _controller.AllowBranches;
+		_allowConnectionsCheckBox.ButtonPressed = _controller.AllowConnections;
+		_branchChanceSpinBox.Value = _controller.BranchChance;
 		_seedLineEdit.Text = _controller.Seed.ToString();
 
 		_regenerateButton.Pressed += OnRegeneratePressed;
@@ -43,10 +44,10 @@ public partial class RandomWalkParameters : Control
 		_controller.MinSteps = (int)_minStepsSpinBox.Value;
 		_controller.MaxSteps = (int)_maxStepsSpinBox.Value;
 		_controller.StepChance = (float)_stepChanceSpinBox.Value;
-		_controller.AllowLoops = _allowLoopsCheckBox.Pressed;
-		_controller.AllowBranching = _allowBranchingCheckBox.Pressed;
-		_controller.AllowConnectingBranches = _allowConnectingBranchesCheckBox.Pressed;
-		_controller.BranchingChance = (int)_branchingChanceSpinBox.Value;
+		_controller.AllowLoops = _allowLoopsCheckBox.ButtonPressed;
+		_controller.AllowBranches = _allowBranchesCheckBox.ButtonPressed;
+		_controller.AllowConnections = _allowConnectionsCheckBox.ButtonPressed;
+		_controller.BranchChance = (float)_branchChanceSpinBox.Value;
 
 		if (int.TryParse(_seedLineEdit.Text, out int seed))
 		{
