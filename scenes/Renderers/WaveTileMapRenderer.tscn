@@ -282,3 +282,4 @@ tile_set = SubResource("TileSet_kru83")
 
 [node name="PathLayer" type="TileMapLayer" parent="."]
 tile_set = SubResource("TileSet_6h36j")
+collision_enabled = false

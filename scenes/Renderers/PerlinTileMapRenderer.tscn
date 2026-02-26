@@ -51,3 +51,4 @@ script = ExtResource("1_s5rpg")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 tile_set = SubResource("TileSet_va2cb")
+collision_enabled = false
