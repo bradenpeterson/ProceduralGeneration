@@ -50,10 +50,10 @@ public static class RandomWalkGenerator
 
         grid[currentX, currentY] = true;
 
-        // "Connect" = branches may step into existing rooms (loops). Only when both are true.
-        bool allowRevisit = allowLoops && allowConnectingBranches;
+        // "Connect" = branches may step into existing rooms (loops)
+        bool allowRevisit = allowLoops;
 
-        Walk(grid, edges, maxTotalEdges, currentX, currentY, 0, minSteps, maxSteps, branchingChance, allowRevisit, allowBranching, rng);
+        Walk(grid, edges, maxTotalEdges, currentX, currentY, 0, minSteps, maxSteps, stepChance, branchingChance, allowRevisit, allowBranching, rng);
 
         return new RandomWalkResult { Grid = grid, Edges = edges };
     }
@@ -151,7 +151,8 @@ public static class RandomWalkGenerator
         int stepCount,
         int minSteps, 
         int maxSteps,
-        float branchChance, 
+        float stepChance,
+        float branchingChance, 
         bool allowRevisit,
         bool allowBranching,
         Random rng)
@@ -161,6 +162,9 @@ public static class RandomWalkGenerator
 
         bool canStop = stepCount >= minSteps && (stepCount >= maxSteps || !HasValidMove(grid, currentX, currentY, allowRevisit));
         if (canStop)
+            return;
+
+        if (stepCount > minSteps && rng.NextDouble() > stepChance)
             return;
 
         if (!TryGetRandomDirection(grid, currentX, currentY, allowRevisit, rng, out int dx, out int dy))
@@ -175,10 +179,10 @@ public static class RandomWalkGenerator
         if (!grid[newX, newY])
             grid[newX, newY] = true;
         
-        Walk(grid, edges, maxTotalEdges, newX, newY, stepCount + 1, minSteps, maxSteps, branchChance, allowRevisit, allowBranching, rng);
+        Walk(grid, edges, maxTotalEdges, newX, newY, stepCount + 1, minSteps, maxSteps, stepChance, branchingChance, allowRevisit, allowBranching, rng);
 
-        if (edges.Count < maxTotalEdges && allowBranching && rng.NextDouble() < branchChance)
-            Walk(grid, edges, maxTotalEdges, currentX, currentY, stepCount, minSteps, maxSteps, branchChance, allowRevisit, allowBranching, rng);
+        if (edges.Count < maxTotalEdges && allowBranching && rng.NextDouble() < branchingChance)
+            Walk(grid, edges, maxTotalEdges, currentX, currentY, stepCount, minSteps, maxSteps, stepChance, branchingChance, allowRevisit, allowBranching, rng);
     }
 
 }
