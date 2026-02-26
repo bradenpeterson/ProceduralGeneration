@@ -31,11 +31,9 @@ public static class RandomWalkGenerator
         if (minSteps <= 0 || maxSteps <= 0 || minSteps > maxSteps)
             return new RandomWalkResult { Grid = new bool[0, 0], Edges = new List<(int, int, int, int)>() };
 
-        if (stepChance < 0f || stepChance > 1f)
-            return new RandomWalkResult { Grid = new bool[0, 0], Edges = new List<(int, int, int, int)>() };
-
-        if (branchingChance < 0f || branchingChance > 1f)
-            return new RandomWalkResult { Grid = new bool[0, 0], Edges = new List<(int, int, int, int)>() };
+        // Clamp probabilities into [0,1] so bad UI input doesn't kill generation.
+        stepChance = Math.Clamp(stepChance, 0f, 1f);
+        branchingChance = Math.Clamp(branchingChance, 0f, 1f);
 
 		var rng = seed.HasValue ? new Random(seed.Value) : new Random();
 		var grid = new bool[maxSteps, maxSteps];
@@ -164,7 +162,8 @@ public static class RandomWalkGenerator
         if (canStop)
             return;
 
-        if (stepCount > minSteps && rng.NextDouble() > stepChance)
+        // Once we've taken at least minSteps, stepChance is the probability to CONTINUE the branch.
+        if (stepCount >= minSteps && rng.NextDouble() > stepChance)
             return;
 
         if (!TryGetRandomDirection(grid, currentX, currentY, allowRevisit, rng, out int dx, out int dy))

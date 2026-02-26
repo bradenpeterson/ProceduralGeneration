@@ -4,9 +4,9 @@ using System;
 public partial class RandomWalkRenderer : Node2D
 {
 	[Export] public int CellSizePx { get; set; } = 16;
-	[Export] public float RoomSize { get; set; } = 3;
-	[Export] public float GapSize { get; set; } = 1;
-	private float StrideBlocks => RoomSize + GapSize;
+	[Export] public int RoomSize { get; set; } = 3;
+	[Export] public int GapSize { get; set; } = 1;
+	private int StrideBlocks => RoomSize + GapSize;
 
 	[Export] public Color EdgeColor { get; set; } = new Color("ffffff");
 	[Export] public Color RoomColor { get; set; } = new Color("000000");
@@ -43,8 +43,8 @@ public partial class RandomWalkRenderer : Node2D
 
 		if (_result.Edges != null && _result.Edges.Count > 0)
 		{
-			float halfRoomSize = RoomSize / 2;
-			float hallwayWidth = CellSizePx * GapSize / 2;
+			float halfRoomSize = RoomSize / 2f;
+			float hallwayWidth = CellSizePx * GapSize / 2f;
 
 			foreach (var edge in _result.Edges)
 			{
